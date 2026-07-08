@@ -268,7 +268,216 @@ box-shadow:
 
 }
 
+/* Product Grid */
 
+.product-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:30px;
+
+}
+
+/* Product Card */
+
+.product-card{
+
+    position:relative;
+
+    background:#fff;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    box-shadow:0 8px 24px rgba(0,0,0,.10);
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+
+}
+
+/* Hover */
+
+.product-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 20px 40px rgba(0,0,0,.18);
+
+}
+
+/* Badge */
+
+.product-badge{
+
+    position:absolute;
+
+    top:15px;
+
+    left:15px;
+
+    background:#E53935;
+
+    color:#fff;
+
+    padding:6px 12px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+/* Image Wrapper */
+
+.product-image-wrapper{
+
+    overflow:hidden;
+
+}
+
+/* Product Image */
+
+.product-image{
+
+    width:100%;
+
+    height:220px;
+
+    object-fit:cover;
+
+    transition:transform .35s ease;
+
+}
+
+/* Image Hover */
+
+.product-card:hover .product-image{
+
+    transform:scale(1.08);
+
+}
+
+/* Content */
+
+.product-content{
+
+    padding:20px;
+
+}
+
+/* Category */
+
+.product-category{
+
+    color:#2E8B57;
+
+    font-weight:600;
+
+    font-size:14px;
+
+}
+
+/* Title */
+
+.product-title{
+
+    margin:10px 0;
+
+    font-size:22px;
+
+}
+
+/* Rating */
+
+.product-rating{
+
+    color:#FF9800;
+
+}
+
+/* Price */
+
+.product-price{
+
+    display:flex;
+
+    gap:12px;
+
+    align-items:center;
+
+    margin:15px 0;
+
+}
+
+.current-price{
+
+    color:#2E8B57;
+
+    font-weight:bold;
+
+}
+
+.old-price{
+
+    color:#888;
+
+}
+
+/* Button */
+
+.add-cart-btn{
+
+    width:100%;
+
+    border:none;
+
+    background:#2E8B57;
+
+    color:#fff;
+
+    padding:14px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    transition:
+        background-color .3s ease,
+        transform .2s ease,
+        box-shadow .3s ease;
+
+}
+
+.add-cart-btn:hover{
+
+    background:#1F6F43;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+
+}
+
+.add-cart-btn:active{
+
+    transform:scale(.98);
+
+}
+
+.add-cart-btn:focus-visible{
+
+    outline:3px solid #90CAF9;
+
+    outline-offset:3px;
+
+}
 
 
 
