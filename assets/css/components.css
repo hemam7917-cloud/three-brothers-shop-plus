@@ -1,0 +1,19 @@
+.top-bar{
+    background:var(--primary-color);
+    color:#fff;
+    text-align:center;
+    padding:8px 0;
+}
+
+.header{
+    background:#fff;
+    border-bottom:1px solid var(--border-color);
+}
+
+.header .container{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:16px 0;
+}

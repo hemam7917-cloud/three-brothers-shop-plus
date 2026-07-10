@@ -1,0 +1,70 @@
+*,
+*::before,
+*::after{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:"Poppins",sans-serif;
+    background:var(--background-color);
+    color:var(--text-color);
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:0 auto;
+}
+
+.text-center{
+    text-align:center;
+}
+
+.logo{
+    font-size:1.5rem;
+    font-weight:700;
+    color:var(--primary-color);
+}
+
+nav ul{
+    display:flex;
+    gap:24px;
+}
+
+nav a{
+    color:var(--text-color);
+    font-weight:500;
+}
+
+nav a:hover{
+    color:var(--primary-color);
+}
+
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+
+.header-actions input{
+    width:250px;
+    padding:10px 14px;
+    border:1px solid var(--border-color);
+    border-radius:8px;
+}
+
+
+.header-actions button{
+    padding:10px 14px;
+    border-radius:8px;
+    background:var(--background-color);
+    transition:.3s;
+}
+
+.header-actions button:hover{
+    background:var(--primary-color);
+    color:#fff;
+}
