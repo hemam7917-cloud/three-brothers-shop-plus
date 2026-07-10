@@ -1,9 +1,0 @@
-<audio controls>
-
-<source src="../audio/welcome.mp3"
-
-type="audio/mpeg">
-
-Your browser does not support audio.
-
-</audio>
