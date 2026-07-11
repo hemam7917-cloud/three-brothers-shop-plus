@@ -7,9 +7,13 @@
 }
 
 body{
-    font-family:"Poppins",sans-serif;
+
     background:var(--background-color);
+
     color:var(--text-color);
+
+    transition:.3s ease;
+
 }
 
 .container{
@@ -65,7 +69,7 @@ width:0;
 
 height:2px;
 
-background:var(--primary-color);
+background:var(--surface-color);
 
 transition:var(--transition-fast);
 
@@ -101,12 +105,12 @@ width:100%;
 .header-actions button{
     padding:10px 14px;
     border-radius:8px;
-    background:var(--background-color);
+    background:var(--surface-color);
     transition:.3s;
 }
 
 .header-actions button:hover{
-    background:var(--primary-color);
+    background:var(--surface-color);
     color:#fff;
 }
 
@@ -169,7 +173,7 @@ transition:.3s;
 
 .btn-primary{
 
-background:var(--primary-color);
+background:var(--surface-color);
 
 color:#fff;
 
@@ -231,7 +235,7 @@ transform:translateY(-2px);
 
 display:inline-block;
 
-background:#E8F5E9;
+background:var(--surface-color);
 
 color:var(--primary-color);
 
@@ -259,7 +263,7 @@ font-weight:500;
 
 .categories{
     padding:80px 0;
-    background:var(--background-color);
+    background:var(--surface-color);
 }
 
 .section-header{
@@ -282,7 +286,7 @@ font-weight:500;
 }
 
 .category-card{
-    background:#fff;
+    background:var(--surface-color);
     border-radius:12px;
     padding:20px;
     text-align:center;
@@ -327,7 +331,7 @@ box-shadow:
 
 padding:80px 0;
 
-background:#fff;
+background:var(--surface-color);
 
 }
 
@@ -382,7 +386,7 @@ top:15px;
 
 left:15px;
 
-background:var(--primary-color);
+background:var(--surface-color);
 
 color:#fff;
 
@@ -445,7 +449,7 @@ margin:12px 0;
 }
 
 .newsletter{
-    background:var(--primary-color);
+    background:var(--surface-color);
     color:#fff;
     padding:60px 0;
 }
@@ -484,7 +488,7 @@ margin:12px 0;
 .trust-card{
     text-align:center;
     padding:24px;
-    background:var(--background-color);
+    background:var(--surface-color);
     border-radius:12px;
 }
 
