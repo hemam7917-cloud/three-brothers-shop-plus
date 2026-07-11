@@ -339,3 +339,33 @@ transition:.3s;
 transform:rotate(20deg);
 
 }
+
+.skip-link{
+
+position:absolute;
+
+top:-50px;
+
+left:20px;
+
+background:var(--primary-color);
+
+color:#fff;
+
+padding:12px 20px;
+
+border-radius:8px;
+
+text-decoration:none;
+
+z-index:9999;
+
+transition:.3s;
+
+}
+
+.skip-link:focus{
+
+top:20px;
+
+}

@@ -30,6 +30,10 @@ href="assets/images/logo/favicon.ico">
 
 <body>
 
+<a href="#main-content" class="skip-link">
+    Skip to Main Content
+</a>
+
 <link rel="stylesheet" href="assets/css/reset.css">
 <link rel="stylesheet" href="assets/css/variables.css">
 <link rel="stylesheet" href="assets/css/style.css">
@@ -144,13 +148,16 @@ height="70">
             <div class="header-actions">
 
                 <input
-                    type="text"
-                    placeholder="Search products..."
-                >
+
+type="search"
+
+placeholder="Search Products"
+
+aria-label="Search Products">
 
                 <button>❤️</button>
 
-                <button>🛒</button>
+                <button aria-label="Shopping Cart">🛒</button>
 
                 <button>👤</button>
 
@@ -162,7 +169,7 @@ height="70">
 
 </>
 
-<main>
+<main id="main-content">
 
 <section class="hero">
 
@@ -467,11 +474,17 @@ width="800"
 
         <form class="newsletter-form">
 
-            <input
-                type="email"
-                placeholder="Enter your email"
-                aria-label="Email Address"
-                required>
+            <label for="email">
+
+Email Address
+
+</label>
+
+<input
+
+id="email"
+
+type="email">
 
             <button type="submit" class="btn btn-primary">
                 Subscribe
