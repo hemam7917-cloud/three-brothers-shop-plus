@@ -67,3 +67,20 @@ window.addEventListener("load", () => {
     }, 300);
 
 });
+
+
+const skeleton = document.getElementById("product-skeleton");
+
+const products = document.getElementById("featured-products");
+
+window.addEventListener("load", () => {
+
+    setTimeout(() => {
+
+        skeleton.classList.add("hide");
+
+        products.classList.remove("hide");
+
+    },1500);
+
+});

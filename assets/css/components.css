@@ -242,3 +242,59 @@ visibility:hidden;
 pointer-events:none;
 
 }
+
+
+/* ===================================
+   Skeleton Loader
+=================================== */
+
+.skeleton-grid{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:24px;
+
+}
+
+.skeleton-card{
+
+height:320px;
+
+border-radius:12px;
+
+background:linear-gradient(
+90deg,
+#eeeeee 25%,
+#f7f7f7 50%,
+#eeeeee 75%
+);
+
+background-size:400% 100%;
+
+animation:skeleton-loading 1.2s infinite;
+
+}
+
+@keyframes skeleton-loading{
+
+0%{
+
+background-position:100% 0;
+
+}
+
+100%{
+
+background-position:-100% 0;
+
+}
+
+}
+
+.hide{
+
+display:none;
+
+}
