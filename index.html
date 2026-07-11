@@ -20,15 +20,16 @@
     <meta name="robots"
           content="index, follow">
 
-    <link rel="icon"
-          href="assets/images/logo/favicon.ico">
+    <link
+rel="icon"
+type="image/x-icon"
+href="assets/images/logo/favicon.ico">
 
 </head>
 
 
 <body>
 
-    <script src="script.js"></script>
 <link rel="stylesheet" href="assets/css/reset.css">
 <link rel="stylesheet" href="assets/css/variables.css">
 <link rel="stylesheet" href="assets/css/style.css">
@@ -49,7 +50,7 @@
 </div>
 
 
-<header>
+<header id="main-header">
 
     <div class="top-bar">
 
@@ -65,13 +66,32 @@
 
         <div class="container">
 
-            <div class="logo">
+            <a href="index.html" class="logo">
 
-                Three Brothers Shop Plus
+          <img
+src="assets/images/logo/logo.webp"
+alt="Three Brothers Shop Plus Logo">
 
-            </div>
+                
 
-            <nav>
+            </a>
+
+<button
+    class="menu-toggle"
+    id="menu-toggle"
+    aria-label="Open Navigation Menu"
+    aria-expanded="false">
+
+    ☰
+
+</button>
+
+
+<nav
+    id="main-nav"
+    aria-label="Primary Navigation">
+
+
 
                 <ul>
 
@@ -108,7 +128,7 @@
 
     </div>
 
-</header>
+</>
 
 <main>
 
@@ -159,7 +179,7 @@ Browse Categories
 <div class="hero-image">
 
 <img
-src="assets/images/banners/hero-banner.jpg"
+src="assets/images/banners/hero-banner.webp"
 alt="Fresh grocery products at Three Brothers Shop Plus">
 
 <a
@@ -190,7 +210,7 @@ Shop Now
 
             <article class="category-card">
 
-                <img src="assets/images/categories/vegetables.jpg"
+                <img src="assets/images/categories/vegetables.webp"
                      alt="Fresh Vegetables">
 
                 <h3>Vegetables</h3>
@@ -201,7 +221,7 @@ Shop Now
 
             <article class="category-card">
 
-                <img src="assets/images/categories/fruits.jpg"
+                <img src="assets/images/categories/fruits.webp"
                      alt="Fresh Fruits">
 
                 <h3>Fruits</h3>
@@ -212,7 +232,7 @@ Shop Now
 
             <article class="category-card">
 
-                <img src="assets/images/categories/rice.jpg"
+                <img src="assets/images/categories/rice.webp"
                      alt="Rice">
 
                 <h3>Rice</h3>
@@ -223,7 +243,7 @@ Shop Now
 
             <article class="category-card">
 
-                <img src="assets/images/categories/oil.jpg"
+                <img src="assets/images/categories/oil.webp"
                      alt="Cooking Oil">
 
                 <h3>Cooking Oil</h3>
@@ -233,25 +253,25 @@ Shop Now
             </article>
 
 <article class="category-card">
-    <img src="assets/images/categories/dairy.jpg" alt="Fresh Dairy Products">
+    <img src="assets/images/categories/dairy.webp" alt="Fresh Dairy Products">
     <h3>Dairy</h3>
     <p>65+ Products</p>
 </article>
 
 <article class="category-card">
-    <img src="assets/images/categories/beverages.jpg" alt="Cold Beverages">
+    <img src="assets/images/categories/beverages.webp" alt="Cold Beverages">
     <h3>Beverages</h3>
     <p>85+ Products</p>
 </article>
 
 <article class="category-card">
-    <img src="assets/images/categories/snacks.jpg" alt="Snacks">
+    <img src="assets/images/categories/snacks.webp" alt="Snacks">
     <h3>Snacks</h3>
     <p>150+ Products</p>
 </article>
 
 <article class="category-card">
-    <img src="assets/images/categories/personal-care.jpg" alt="Personal Care Products">
+    <img src="assets/images/categories/personal-care.webp" alt="Personal Care Products">
     <h3>Personal Care</h3>
     <p>70+ Products</p>
 </article>
@@ -282,7 +302,7 @@ Shop Now
 <span class="product-badge">Fresh</span>
 
 <img
-src="assets/images/products/rice.jpg"
+src="assets/images/products/premium-rice.webp"
 alt="Premium Rice">
 
 <h3>Premium Rice</h3>
@@ -309,7 +329,7 @@ alt="Premium Rice">
 
     <span class="product-badge">Fresh</span>
 
-    <img src="assets/images/products/apple.jpg"
+    <img src="assets/images/products/fresh-apple.webp"
          alt="Fresh Apple">
 
     <h3>Fresh Apple</h3>
@@ -341,8 +361,170 @@ alt="Premium Rice">
 
 </section>
 
+<section class="newsletter">
+
+    <div class="container newsletter-container">
+
+        <div class="newsletter-content">
+
+            <h2>Subscribe to Our Newsletter</h2>
+
+            <p>
+                Get the latest offers, discounts and grocery updates directly in your inbox.
+            </p>
+
+        </div>
+
+        <form class="newsletter-form">
+
+            <input
+                type="email"
+                placeholder="Enter your email"
+                aria-label="Email Address"
+                required>
+
+            <button type="submit" class="btn btn-primary">
+                Subscribe
+            </button>
+
+        </form>
+
+    </div>
+
+
+</section>
+
+<section class="trust-section">
+
+<div class="container trust-grid">
+
+<div class="trust-card">
+
+🚚
+
+<h3>Free Delivery</h3>
+
+<p>Orders over ৳1000</p>
+
+</div>
+
+<div class="trust-card">
+
+💳
+
+<h3>Secure Payment</h3>
+
+<p>100% Safe Payment</p>
+
+</div>
+
+<div class="trust-card">
+
+🛡️
+
+<h3>Quality Products</h3>
+
+<p>Fresh & Trusted Grocery</p>
+
+</div>
+
+<div class="trust-card">
+
+📞
+
+<h3>24/7 Support</h3>
+
+<p>Always Ready to Help</p>
+
+</div>
+
+</div>
+
+</section>
+
 </main>
 
+
+<footer>
+
+<div class="container footer-grid">
+
+<div>
+
+<h3>Three Brothers Shop Plus</h3>
+
+<p>
+Your trusted online grocery store in Bangladesh.
+</p>
+
+</div>
+
+<div>
+
+<h4>Quick Links</h4>
+
+<ul>
+
+<li><a href="#">Home</a></li>
+
+<li><a href="#">Products</a></li>
+
+<li><a href="#">Categories</a></li>
+
+<li><a href="#">Contact</a></li>
+
+</ul>
+
+</div>
+
+<div>
+
+<h4>Customer Service</h4>
+
+<ul>
+
+<li><a href="#">FAQ</a></li>
+
+<li><a href="#">Shipping</a></li>
+
+<li><a href="#">Privacy Policy</a></li>
+
+<li><a href="#">Terms</a></li>
+
+</ul>
+
+</div>
+
+<div>
+
+<h4>Contact</h4>
+
+<p>Email: support@threebrothers.com</p>
+
+<p>Phone: +880 1700000000</p>
+
+<p>Bangladesh</p>
+
+</div>
+
+</div>
+
+<div class="copyright">
+
+<p>
+
+© 2026 Three Brothers Shop Plus.
+All Rights Reserved.
+
+</p>
+
+</div>
+
+</footer>
+
+<script src="assets/js/main.js"></script>
+
+<div id="overlay"></div>
 
 </body>
 </html>

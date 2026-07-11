@@ -333,3 +333,83 @@ color:var(--primary-color);
 margin:12px 0;
 
 }
+
+.newsletter{
+    background:var(--primary-color);
+    color:#fff;
+    padding:60px 0;
+}
+
+.newsletter-container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:30px;
+}
+
+.newsletter-form{
+    display:flex;
+    gap:12px;
+}
+
+.newsletter-form input{
+    padding:14px;
+    min-width:300px;
+    border:none;
+    border-radius:8px;
+}
+
+
+.trust-section{
+    padding:60px 0;
+    background:#fff;
+}
+
+.trust-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+}
+
+.trust-card{
+    text-align:center;
+    padding:24px;
+    background:var(--background-color);
+    border-radius:12px;
+}
+
+
+footer{
+    background:#222;
+    color:#fff;
+    padding-top:60px;
+}
+
+.footer-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:30px;
+}
+
+footer ul{
+    list-style:none;
+}
+
+footer li{
+    margin-bottom:10px;
+}
+
+footer a{
+    color:#ddd;
+}
+
+footer a:hover{
+    color:#fff;
+}
+
+.copyright{
+    margin-top:40px;
+    text-align:center;
+    padding:20px 0;
+    border-top:1px solid rgba(255,255,255,.15);
+}
