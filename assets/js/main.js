@@ -54,3 +54,16 @@ backToTop.addEventListener("click", () => {
     });
 
 });
+
+
+const preloader = document.getElementById("preloader");
+
+window.addEventListener("load", () => {
+
+    setTimeout(() => {
+
+        preloader.classList.add("hide");
+
+    }, 300);
+
+});
