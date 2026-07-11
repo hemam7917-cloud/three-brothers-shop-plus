@@ -28,18 +28,59 @@ body{
     color:var(--primary-color);
 }
 
-nav ul{
-    display:flex;
-    gap:24px;
+.logo img{
+
+transition:.35s ease;
+
 }
 
-nav a{
-    color:var(--text-color);
-    font-weight:500;
+.logo img:hover{
+
+transform:scale(1.05);
+
 }
 
-nav a:hover{
-    color:var(--primary-color);
+
+nav ul li a{
+
+position:relative;
+
+text-decoration:none;
+
+transition:var(--transition-fast);
+
+}
+
+nav ul li a::after{
+
+content:"";
+
+position:absolute;
+
+left:0;
+
+bottom:-6px;
+
+width:0;
+
+height:2px;
+
+background:var(--primary-color);
+
+transition:var(--transition-fast);
+
+}
+
+nav ul li a:hover{
+
+color:var(--primary-color);
+
+}
+
+nav ul li a:hover::after{
+
+width:100%;
+
 }
 
 .header-actions{
@@ -134,6 +175,41 @@ color:#fff;
 
 }
 
+.btn-primary{
+
+transition:
+
+transform .25s ease,
+
+background .25s ease,
+
+box-shadow .25s ease;
+
+}
+
+.btn-primary:hover{
+
+transform:translateY(-3px);
+
+box-shadow:
+
+0 10px 25px rgba(0,0,0,.15);
+
+}
+
+.btn-secondary{
+
+transition:.25s;
+
+}
+
+.btn-secondary:hover{
+
+transform:translateY(-3px);
+
+}
+
+
 .btn-outline{
 
 border:2px solid var(--primary-color);
@@ -219,6 +295,25 @@ font-weight:500;
     box-shadow:var(--shadow-lg);
 }
 
+.category-card{
+
+transition:
+
+transform .35s ease,
+
+box-shadow .35s ease;
+
+}
+
+.category-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:
+
+0 14px 35px rgba(0,0,0,.1);
+
+}
 
 .category-card img{
     width:100%;
@@ -249,33 +344,23 @@ gap:24px;
 
 .product-card{
 
-background:#fff;
+transition:
 
-border-radius:12px;
+transform var(--transition-normal),
 
-padding:20px;
-
-box-shadow:var(--shadow-sm);
-
-position:relative;
-
-transition:.3s;
+box-shadow var(--transition-normal);
 
 }
 
-.product-card{
+.product-card:hover{
 
-background:#fff;
+transform:
 
-border-radius:12px;
+translateY(-10px);
 
-padding:20px;
+box-shadow:
 
-box-shadow:var(--shadow-sm);
-
-position:relative;
-
-transition:.3s;
+0 18px 40px rgba(0,0,0,.12);
 
 }
 
@@ -306,6 +391,31 @@ padding:6px 12px;
 border-radius:30px;
 
 font-size:.8rem;
+
+}
+
+
+.product-image{
+
+overflow:hidden;
+
+border-radius:12px;
+
+}
+
+.product-image img{
+
+transition:transform .5s ease;
+
+display:block;
+
+width:100%;
+
+}
+
+.product-card:hover img{
+
+transform:scale(1.08);
 
 }
 

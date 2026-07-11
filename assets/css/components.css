@@ -1,3 +1,15 @@
+
+/* ===================================
+   Global Transition
+=================================== */
+
+:root{
+    --transition-fast: .25s ease;
+    --transition-normal: .35s ease;
+    --transition-slow: .5s ease;
+}
+
+
 .top-bar{
     background:var(--primary-color);
     color:#fff;
