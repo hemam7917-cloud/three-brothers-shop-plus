@@ -1,0 +1,9 @@
+{
+"name":"Three Brothers Shop Plus",
+"short_name":"TB Shop",
+"start_url":"/",
+"display":"standalone",
+"background_color":"#ffffff",
+"theme_color":"#2E8B57",
+"icons":[]
+}

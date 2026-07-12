@@ -1,28 +1,62 @@
+/* ===================================
+   DESIGN TOKENS
+=================================== */
 
+:root {
+    /* Colors */
+    --primary-color: #2e8b57;
+    --secondary-color: #ff9800;
+    --accent-color: #e53935;
 
-:root{
+    --background-color: #f8f9fa;
+    --surface-color: #ffffff;
+    --surface-color-2: #f1f5f9;
 
-    --primary-color:#2E8B57;
+    --text-color: #222222;
+    --muted-text-color: #666666;
 
-    --background-color:#ffffff;
+    --border-color: #e5e7eb;
 
-    --surface-color:#f8f9fa;
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-xxl: 48px;
 
-    --text-color:#222222;
+    /* Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
 
-    --border-color:#e5e7eb;
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.15);
 
+    /* Transitions */
+    --transition-fast: 0.25s ease;
+    --transition-normal: 0.35s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Dark Theme */
+
+body.dark {
+    --background-color: #0f1115;
+    --surface-color: #171a21;
+    --surface-color-2: #20242d;
+
+    --text-color: #f5f7fa;
+    --muted-text-color: #b5bdc9;
+
+    --border-color: #333844;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.5);
 }
 
 
-body.dark{
-
-    --background-color:#121212;
-
-    --surface-color:#1e1e1e;
-
-    --text-color:#f5f5f5;
-
-    --border-color:#3a3a3a;
-
-}

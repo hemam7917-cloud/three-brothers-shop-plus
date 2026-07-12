@@ -1,27 +1,59 @@
-/* Reset */
+/* ===================================
+   CSS RESET
+=================================== */
+
 *,
 *::before,
-*::after{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html{
-    scroll-behavior:smooth;
+html {
+    scroll-behavior: smooth;
 }
 
-body{
-    min-height:100vh;
+body {
+    min-height: 100vh;
 }
 
+img,
+picture {
+    max-width: 100%;
+    display: block;
+}
 
-:focus-visible{
+ul,
+ol {
+    list-style: none;
+}
 
-outline:3px solid var(--primary-color);
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
-outline-offset:4px;
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
 
-border-radius:6px;
+button {
+    border: none;
+    cursor: pointer;
+}
 
+input,
+select,
+textarea {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 3px solid #2e8b57;
+    outline-offset: 4px;
+    border-radius: 6px;
 }

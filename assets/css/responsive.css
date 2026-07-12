@@ -1,210 +1,152 @@
-@media(max-width:992px){
+/* ===================================
+   RESPONSIVE DESIGN
+=================================== */
 
-.hero-container{
+@media (max-width: 1100px) {
+    .header .container {
+        flex-wrap: wrap;
+    }
 
-flex-direction:column;
-
-text-align:center;
-
+    .header-actions input {
+        width: 220px;
+    }
 }
 
-.hero-buttons{
+@media (max-width: 992px) {
+    .hero-container {
+        flex-direction: column;
 
-display:flex;
+        text-align: center;
+    }
 
-justify-content:center;
+    .hero-buttons,
+    .hero-features {
+        justify-content: center;
+    }
 
-flex-wrap:wrap;
+    .category-grid,
+    .product-grid,
+    .skeleton-grid,
+    .trust-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-gap:15px;
+    .newsletter-container {
+        flex-direction: column;
 
+        text-align: center;
+    }
+
+    .newsletter-form {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .newsletter-form input {
+        min-width: 100%;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-.hero-features{
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
 
-justify-content:center;
+    #main-nav {
+        position: fixed;
 
-flex-wrap:wrap;
+        top: 0;
+        right: -100%;
 
+        width: 280px;
+        max-width: 85%;
+
+        height: 100vh;
+
+        background: var(--surface-color);
+
+        padding: 100px 30px;
+
+        transition: right var(--transition-normal);
+
+        z-index: 999;
+    }
+
+    #main-nav.active {
+        right: 0;
+    }
+
+    #main-nav ul {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 24px;
+    }
+
+    .header-actions {
+        width: 100%;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+    }
+
+    .header-actions input {
+        width: 100%;
+    }
+
+    .hero-content h1 {
+        font-size: 2.3rem;
+    }
 }
 
-}
-
-@media(max-width:992px){
-
-.category-grid{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:576px){
-
-.category-grid{
-
-grid-template-columns:1fr;
-
-}
-
-}
-
-@media(max-width:992px){
-
-.product-grid{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:576px){
-
-.product-grid{
-
-grid-template-columns:1fr;
-
-}
-
-}
-
-
-@media(max-width:992px){
-
-.newsletter-container{
-
-flex-direction:column;
-
-text-align:center;
-
-}
-
-.newsletter-form{
-
-width:100%;
-
-flex-direction:column;
-
-}
-
-.newsletter-form input{
-
-min-width:100%;
-
-}
-
-.trust-grid{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-.footer-grid{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:576px){
-
-.trust-grid{
-
-grid-template-columns:1fr;
-
-}
-
-.footer-grid{
-
-grid-template-columns:1fr;
-
-}
-
-}
-
-
-@media (max-width:768px){
-
-.menu-toggle{
-    display:block;
-}
-
-#main-nav{
-
-    position:fixed;
-
-    top:0;
-
-    right:-100%;
-
-    width:280px;
-
-    height:100vh;
-
-    background:#fff;
-
-    padding:100px 30px;
-
-    transition:.3s;
-
-    z-index:999;
-
-}
-
-#main-nav.active{
-
-    right:0;
-
-}
-
-#main-nav ul{
-
-    flex-direction:column;
-
-    gap:24px;
-
-}
-
-}
-
-@media(max-width:576px){
-
-#back-to-top{
-
-width:48px;
-
-height:48px;
-
-font-size:20px;
-
-right:20px;
-
-bottom:20px;
-
-}
-
-}
-
-
-@media(max-width:992px){
-
-.skeleton-grid{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:576px){
-
-.skeleton-grid{
-
-grid-template-columns:1fr;
-
-}
-
+@media (max-width: 576px) {
+    .container {
+        width: 94%;
+    }
+
+    .category-grid,
+    .product-grid,
+    .skeleton-grid,
+    .trust-grid,
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding: 60px 0;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    #back-to-top {
+        width: 48px;
+        height: 48px;
+
+        right: 20px;
+        bottom: 20px;
+
+        font-size: 20px;
+    }
+
+    .logo img {
+        width: 180px;
+    }
 }
