@@ -84,14 +84,14 @@ window.addEventListener("load", () => {
 ================================= */
 
 const skeleton = document.getElementById("product-skeleton");
-const products = document.getElementById("featured-products");
+const featuredProducts = document.getElementById("featured-products");
 
 window.addEventListener("load", () => {
-    if (skeleton && products) {
+    if (skeleton && featuredProducts) {
         setTimeout(() => {
             skeleton.classList.add("hide");
-            products.classList.remove("hide");
-        }, 1500);
+            featuredProducts.classList.remove("hide");
+        }, 800);
     }
 });
 
@@ -143,5 +143,125 @@ if (themeToggle) {
         );
 
         updateThemeIcon();
+    });
+}
+
+/* =================================
+   Shopping Cart State
+================================= */
+
+const cart = [];
+
+function addToCart(productId) {
+    const selectedProduct = products.find(
+        (product) => product.id === productId
+    );
+
+    if (!selectedProduct) {
+        console.error("Product not found.");
+        return;
+    }
+
+    const existingCartItem = cart.find(
+        (item) => item.id === productId
+    );
+
+    if (existingCartItem) {
+        existingCartItem.quantity += 1;
+    } else {
+        cart.push({
+            ...selectedProduct,
+            quantity: 1
+        });
+    }
+
+    console.log("Cart:", cart);
+}
+
+
+/* =================================
+   Dynamic Product Rendering
+================================= */
+
+const productGrid = document.getElementById("product-grid");
+
+function renderProducts(productList) {
+    if (!productGrid) return;
+
+    productGrid.innerHTML = "";
+
+    productList.forEach((product) => {
+        const productCard = document.createElement("article");
+
+        productCard.className = "product-card";
+
+        productCard.innerHTML = `
+            <span class="product-badge">
+                ${product.badge}
+            </span>
+
+            <img
+                src="${product.image}"
+                alt="${product.name}"
+                width="800"
+                height="800"
+                loading="lazy"
+                decoding="async">
+
+            <h3>${product.name}</h3>
+
+            <p class="rating">
+                ⭐ ${product.rating} (${product.reviews} Reviews)
+            </p>
+
+            <p class="price">
+                ৳${product.price}
+            </p>
+
+            <div class="product-actions">
+
+                <button
+                    type="button"
+                    class="wishlist-btn"
+                    data-product-id="${product.id}"
+                    aria-label="Add ${product.name} to Wishlist">
+                    ❤️
+                </button>
+
+                <button
+                    type="button"
+                    class="cart-btn"
+                    data-product-id="${product.id}"
+                    aria-label="Add ${product.name} to Cart">
+                    🛒 Add to Cart
+                </button>
+
+            </div>
+        `;
+
+        productGrid.appendChild(productCard);
+    });
+}
+
+if (typeof products !== "undefined") {
+    renderProducts(products);
+}
+
+
+/* =================================
+   Add to Cart Event
+================================= */
+
+if (productGrid) {
+    productGrid.addEventListener("click", (event) => {
+        const cartButton = event.target.closest(".cart-btn");
+
+        if (!cartButton) return;
+
+        const productId = Number(
+            cartButton.dataset.productId
+        );
+
+        addToCart(productId);
     });
 }
