@@ -150,7 +150,40 @@ if (themeToggle) {
    Shopping Cart State
 ================================= */
 
-const cart = [];
+const CART_STORAGE_KEY = "tbsp-cart";
+
+function loadCart() {
+    try {
+        const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+
+        if (!savedCart) {
+            return [];
+        }
+
+        const parsedCart = JSON.parse(savedCart);
+
+        return Array.isArray(parsedCart)
+            ? parsedCart
+            : [];
+    } catch (error) {
+        console.error("Failed to load cart:", error);
+
+        return [];
+    }
+}
+
+const cart = loadCart();
+
+function saveCart() {
+    try {
+        localStorage.setItem(
+            CART_STORAGE_KEY,
+            JSON.stringify(cart)
+        );
+    } catch (error) {
+        console.error("Failed to save cart:", error);
+    }
+}
 
 const cartCount = document.getElementById("cart-count");
 
@@ -305,21 +338,9 @@ function addToCart(productId) {
         });
     }
 
+    saveCart();
+    updateCartCount();
+
     console.log("Cart:", cart);
 }
 
-
-/* ================================
-updatecartcount()
-================================= */
-
-function updateCartCount() {
-    if (!cartCount) return;
-
-    const totalQuantity = cart.reduce(
-        (total, item) => total + item.quantity,
-        0
-    );
-
-    cartCount.textContent = totalQuantity;
-}
