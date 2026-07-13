@@ -196,15 +196,29 @@
                 <div class="header-actions">
 
                     <input
-                        type="search"
-                        placeholder="Search products..."
-                        aria-label="Search Products">
+    type="search"
+    id="product-search"
+    placeholder="Search products..."
+    aria-label="Search Products"
+    autocomplete="off">
 
-                    <button
-                        type="button"
-                        aria-label="Open Wishlist">
-                        ❤️
-                    </button>
+                   <a
+    href="wishlist.html"
+    class="header-icon-btn wishlist-header-btn"
+    aria-label="Open Wishlist">
+
+    <span aria-hidden="true">
+        ❤️
+    </span>
+
+    <span
+        id="wishlist-count"
+        class="wishlist-count"
+        aria-live="polite">
+        0
+    </span>
+
+</a>
 
                     <a
     href="cart.html"
@@ -533,7 +547,7 @@
              Featured Products
         ==================================== -->
 
-        <section
+     <section
     class="featured-products hide"
     id="featured-products">
 
@@ -541,20 +555,79 @@
 
         <div class="section-header">
 
-            <h2>
-                Featured Products
-            </h2>
+    <h2>
+        Featured Products
+    </h2>
 
-            <p>
-                Fresh products selected specially for you.
-            </p>
+    <p>
+        Fresh products selected specially for you.
+    </p>
 
-        </div>
+</div>
 
-        <div
-            class="product-grid"
-            id="product-grid">
-        </div>
+<div class="product-filter-bar">
+
+    <div class="filter-group">
+
+        <label for="category-filter">
+            Filter by Category
+        </label>
+
+        <select id="category-filter">
+
+            <option value="all">
+                All Categories
+            </option>
+
+            <option value="Rice">
+                Rice
+            </option>
+
+            <option value="Fruits">
+                Fruits
+            </option>
+
+            <option value="Cooking Oil">
+                Cooking Oil
+            </option>
+
+            <option value="Dairy">
+                Dairy
+            </option>
+
+            <option value="Bakery">
+                Bakery
+            </option>
+
+            <option value="Vegetables">
+                Vegetables
+            </option>
+
+        </select>
+
+    </div>
+
+    <button
+        type="button"
+        id="clear-filters"
+        class="clear-filter-btn">
+
+        Clear Filters
+
+    </button>
+
+</div>
+
+<p
+    id="search-status"
+    class="search-status"
+    aria-live="polite">
+</p>
+
+<div
+    class="product-grid"
+    id="product-grid">
+</div>
 
     </div>
 
@@ -810,6 +883,9 @@
     <!-- JavaScript -->
 
     <script src="assets/js/products.js"></script>
+
+   
+
 <script src="assets/js/main.js"></script>
 
 </body>
