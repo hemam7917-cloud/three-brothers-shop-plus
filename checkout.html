@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout | Three Brothers Shop Plus</title>
+
+    <meta
+        name="description"
+        content="Complete your order securely at Three Brothers Shop Plus.">
+
+    <link
+        rel="icon"
+        href="assets/images/logo/favicon.ico">
+
+    <link
+        rel="stylesheet"
+        href="assets/css/reset.css">
+
+    <link
+        rel="stylesheet"
+        href="assets/css/variables.css">
+
+    <link
+        rel="stylesheet"
+        href="assets/css/style.css">
+
+    <link
+        rel="stylesheet"
+        href="assets/css/components.css">
+
+    <link
+        rel="stylesheet"
+        href="assets/css/responsive.css">
+</head>
+
+<body>
+
+    <header id="main-header">
+
+        <div class="top-bar">
+            <div class="container">
+                <p>🚚 Free Delivery on Orders Over ৳1000</p>
+            </div>
+        </div>
+
+        <div class="header">
+
+            <div class="container">
+
+                <a
+                    href="index.html"
+                    class="logo"
+                    aria-label="Three Brothers Shop Plus Home">
+
+                    <img
+                        src="assets/images/logo/logo.webp"
+                        alt="Three Brothers Shop Plus Logo"
+                        width="150"
+                        height="52">
+
+                </a>
+
+                <nav aria-label="Primary Navigation">
+
+                    <ul>
+                        <li>
+                            <a href="index.html">Home</a>
+                        </li>
+
+                        <li>
+                            <a href="products.html">Products</a>
+                        </li>
+
+                        <li>
+                            <a href="cart.html">Cart</a>
+                        </li>
+                    </ul>
+
+                </nav>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <main
+        id="main-content"
+        class="checkout-page">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <h1>Checkout</h1>
+
+                <p>
+                    Complete your delivery information
+                    and review your order.
+                </p>
+
+            </div>
+
+            <div
+                id="checkout-empty"
+                class="checkout-empty"
+                hidden>
+            </div>
+
+            <div
+                id="checkout-content"
+                class="checkout-layout">
+
+                <section class="checkout-form-section">
+
+                    <form id="checkout-form">
+
+                        <div class="checkout-card">
+
+                            <h2>Customer Information</h2>
+
+                            <div class="form-group">
+
+                                <label for="full-name">
+                                    Full Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="full-name"
+                                    name="fullName"
+                                    autocomplete="name"
+                                    required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="phone">
+                                    Phone Number
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    autocomplete="tel"
+                                    required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="email">
+                                    Email Address
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    autocomplete="email">
+
+                            </div>
+
+                        </div>
+
+                        <div class="checkout-card">
+
+                            <h2>Delivery Address</h2>
+
+                            <div class="form-group">
+
+                                <label for="address">
+                                    Full Address
+                                </label>
+
+                                <textarea
+                                    id="address"
+                                    name="address"
+                                    rows="4"
+                                    autocomplete="street-address"
+                                    required></textarea>
+
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="form-group">
+
+                                    <label for="district">
+                                        District
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="district"
+                                        name="district"
+                                        required>
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="postal-code">
+                                        Postal Code
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="postal-code"
+                                        name="postalCode">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="checkout-card">
+
+                            <h2>Payment Method</h2>
+
+                            <label class="payment-option">
+
+                                <input
+                                    type="radio"
+                                    name="paymentMethod"
+                                    value="cash-on-delivery"
+                                    checked>
+
+                                <span>
+                                    💵 Cash on Delivery
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary place-order-btn">
+
+                            Place Order
+
+                        </button>
+
+                    </form>
+
+                </section>
+
+                <aside
+                    id="checkout-summary"
+                    class="checkout-summary">
+                </aside>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+
+        <div class="copyright">
+
+            <p>
+                © 2026 Three Brothers Shop Plus.
+                All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+    <script src="assets/js/checkout.js"></script>
+
+</body>
+
+</html>

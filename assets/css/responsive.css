@@ -76,6 +76,15 @@
         z-index: 999;
     }
 
+    @media (max-width: 576px) {
+    .logo img {
+        width: 120px;
+        max-width: 120px;
+        height: 42px;
+    }
+}
+
+
     #main-nav.active {
         right: 0;
     }
@@ -144,9 +153,5 @@
         bottom: 20px;
 
         font-size: 20px;
-    }
-
-    .logo img {
-        width: 180px;
     }
 }
