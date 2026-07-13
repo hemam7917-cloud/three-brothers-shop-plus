@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        All Products | Three Brothers Shop Plus
+    </title>
+
+    <meta
+        name="description"
+        content="Browse all grocery products, search products, filter by category and sort by price at Three Brothers Shop Plus.">
+
+    <link
+        rel="icon"
+        href="assets/images/logo/favicon.ico">
+
+    <link
+        rel="stylesheet"
+        href="assets/css/reset.css">
+
+    <link
+        rel="stylesheet"
+        href="assets/css/variables.css">
+
+    <link
+        rel="stylesheet"
+        href="assets/css/style.css">
+
+    <link
+        rel="stylesheet"
+        href="assets/css/components.css">
+
+    <link
+        rel="stylesheet"
+        href="assets/css/responsive.css">
+</head>
+
+<body>
+
+    <header id="main-header">
+
+        <div class="top-bar">
+
+            <div class="container">
+
+                <p>
+                    🛍️ Browse All Products
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="header">
+
+            <div class="container">
+
+                <a
+                    href="index.html"
+                    class="logo"
+                    aria-label="Three Brothers Shop Plus Home">
+
+                    <img
+                        src="assets/images/logo/logo.webp"
+                        alt="Three Brothers Shop Plus Logo"
+                        width="150"
+                        height="52">
+
+                </a>
+
+                <nav aria-label="Primary Navigation">
+
+                    <ul>
+
+                        <li>
+                            <a href="index.html">
+                                Home
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="products.html"
+                                aria-current="page">
+                                Products
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="wishlist.html">
+                                Wishlist
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="cart.html">
+                                Cart
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </nav>
+
+                <div class="header-actions">
+
+                    <a
+                        href="wishlist.html"
+                        class="header-icon-btn wishlist-header-btn"
+                        aria-label="Open Wishlist">
+
+                        <span aria-hidden="true">
+                            ❤️
+                        </span>
+
+                        <span
+                            id="wishlist-count"
+                            class="wishlist-count">
+                            0
+                        </span>
+
+                    </a>
+
+                    <a
+                        href="cart.html"
+                        class="header-icon-btn cart-header-btn"
+                        aria-label="Open Shopping Cart">
+
+                        <span aria-hidden="true">
+                            🛒
+                        </span>
+
+                        <span
+                            id="cart-count"
+                            class="cart-count">
+                            0
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <main
+        id="main-content"
+        class="products-page">
+
+        <div class="container">
+
+            <div class="section-header">
+
+                <h1>
+                    All Products
+                </h1>
+
+                <p>
+                    Search, filter and sort products
+                    to find exactly what you need.
+                </p>
+
+            </div>
+
+            <section
+                class="catalog-controls"
+                aria-label="Product Filters">
+
+                <div class="catalog-control-group">
+
+                    <label for="catalog-search">
+                        Search Products
+                    </label>
+
+                    <input
+                        type="search"
+                        id="catalog-search"
+                        placeholder="Search by name, category or SKU..."
+                        autocomplete="off">
+
+                </div>
+
+                <div class="catalog-control-group">
+
+                    <label for="catalog-category">
+                        Category
+                    </label>
+
+                    <select id="catalog-category">
+
+                        <option value="all">
+                            All Categories
+                        </option>
+
+                        <option value="Rice">
+                            Rice
+                        </option>
+
+                        <option value="Fruits">
+                            Fruits
+                        </option>
+
+                        <option value="Cooking Oil">
+                            Cooking Oil
+                        </option>
+
+                        <option value="Dairy">
+                            Dairy
+                        </option>
+
+                        <option value="Bakery">
+                            Bakery
+                        </option>
+
+                        <option value="Vegetables">
+                            Vegetables
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="catalog-control-group">
+
+                    <label for="catalog-sort">
+                        Sort By
+                    </label>
+
+                    <select id="catalog-sort">
+
+                        <option value="default">
+                            Default
+                        </option>
+
+                        <option value="price-low-high">
+                            Price: Low to High
+                        </option>
+
+                        <option value="price-high-low">
+                            Price: High to Low
+                        </option>
+
+                        <option value="rating-high-low">
+                            Rating: High to Low
+                        </option>
+
+                        <option value="name-a-z">
+                            Name: A to Z
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="catalog-clear"
+                    class="clear-filter-btn">
+
+                    Clear Filters
+
+                </button>
+
+            </section>
+
+            <p
+                id="catalog-status"
+                class="search-status"
+                aria-live="polite">
+            </p>
+
+            <section
+                id="catalog-grid"
+                class="product-grid"
+                aria-label="Product Catalog">
+            </section>
+
+        </div>
+
+    </main>
+
+    <footer>
+
+        <div class="copyright">
+
+            <p>
+                © 2026 Three Brothers Shop Plus.
+                All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+    <script src="assets/js/products.js"></script>
+    <script src="assets/js/products-page.js"></script>
+
+</body>
+
+</html>
