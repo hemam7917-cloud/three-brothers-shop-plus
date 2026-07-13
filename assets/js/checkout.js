@@ -1,10 +1,11 @@
 "use strict";
 
 /* =================================
-   Checkout Configuration
+   Storage Configuration
 ================================= */
 
 const CART_STORAGE_KEY = "tbsp-cart";
+const ORDERS_STORAGE_KEY = "tbsp-orders";
 
 /* =================================
    DOM Elements
@@ -23,29 +24,25 @@ const checkoutSummary =
     document.getElementById("checkout-summary");
 
 /* =================================
-   Load Cart
+   Load Storage Data
 ================================= */
 
-function loadCart() {
+function loadStorageArray(key) {
     try {
-        const savedCart =
-            localStorage.getItem(CART_STORAGE_KEY);
+        const savedData = localStorage.getItem(key);
 
-        if (!savedCart) {
+        if (!savedData) {
             return [];
         }
 
-        const parsedCart =
-            JSON.parse(savedCart);
+        const parsedData = JSON.parse(savedData);
 
-        return Array.isArray(parsedCart)
-            ? parsedCart
+        return Array.isArray(parsedData)
+            ? parsedData
             : [];
-
     } catch (error) {
-
         console.error(
-            "Failed to load checkout cart:",
+            `Failed to load ${key}:`,
             error
         );
 
@@ -53,10 +50,12 @@ function loadCart() {
     }
 }
 
-const cart = loadCart();
+const cart = loadStorageArray(
+    CART_STORAGE_KEY
+);
 
 /* =================================
-   Helpers
+   Helper Functions
 ================================= */
 
 function formatPrice(amount) {
@@ -73,23 +72,57 @@ function getTotalQuantity() {
 
 function getSubtotal() {
     return cart.reduce(
-        (total, item) => {
-            return (
-                total +
-                Number(item.price || 0) *
-                Number(item.quantity || 0)
-            );
-        },
+        (total, item) =>
+            total +
+            Number(item.price || 0) *
+            Number(item.quantity || 0),
         0
     );
 }
 
+function getShippingCharge() {
+    const subtotal = getSubtotal();
+
+    return subtotal >= 1000
+        ? 0
+        : 60;
+}
+
 /* =================================
-   Empty Checkout
+   Bangladesh Phone Validation
+================================= */
+
+function isValidBangladeshPhone(phone) {
+    const cleanPhone = phone.replace(
+        /[\s-]/g,
+        ""
+    );
+
+    const phonePattern =
+        /^(?:\+?88)?01[3-9]\d{8}$/;
+
+    return phonePattern.test(cleanPhone);
+}
+
+/* =================================
+   Generate Unique Order ID
+================================= */
+
+function generateOrderId() {
+    const timestamp = Date.now();
+
+    const randomNumber = Math.floor(
+        1000 + Math.random() * 9000
+    );
+
+    return `TBSP-${timestamp}-${randomNumber}`;
+}
+
+/* =================================
+   Render Empty Checkout
 ================================= */
 
 function renderEmptyCheckout() {
-
     if (!checkoutContent || !checkoutEmpty) {
         return;
     }
@@ -100,7 +133,9 @@ function renderEmptyCheckout() {
     checkoutEmpty.innerHTML = `
         <div class="empty-cart">
 
-            <div class="empty-cart-icon">
+            <div
+                class="empty-cart-icon"
+                aria-hidden="true">
                 🛒
             </div>
 
@@ -114,9 +149,7 @@ function renderEmptyCheckout() {
             <a
                 href="index.html#featured-products"
                 class="btn btn-primary">
-
                 Continue Shopping
-
             </a>
 
         </div>
@@ -128,23 +161,18 @@ function renderEmptyCheckout() {
 ================================= */
 
 function renderCheckoutSummary() {
-
     if (!checkoutSummary) return;
 
     const totalItems = getTotalQuantity();
     const subtotal = getSubtotal();
-
     const shippingCharge =
-        subtotal >= 1000
-            ? 0
-            : 60;
+        getShippingCharge();
 
     const grandTotal =
         subtotal + shippingCharge;
 
     const productsHTML = cart
         .map((product) => {
-
             const quantity =
                 Number(product.quantity || 0);
 
@@ -155,7 +183,6 @@ function renderCheckoutSummary() {
                 <div class="checkout-summary-item">
 
                     <div>
-
                         <strong>
                             ${product.name}
                         </strong>
@@ -164,7 +191,6 @@ function renderCheckoutSummary() {
                             ${quantity} ×
                             ${formatPrice(price)}
                         </p>
-
                     </div>
 
                     <strong>
@@ -188,29 +214,19 @@ function renderCheckoutSummary() {
             </div>
 
             <div class="summary-row">
-
                 <span>Total Items</span>
-
-                <strong>
-                    ${totalItems}
-                </strong>
-
+                <strong>${totalItems}</strong>
             </div>
 
             <div class="summary-row">
-
                 <span>Subtotal</span>
-
                 <strong>
                     ${formatPrice(subtotal)}
                 </strong>
-
             </div>
 
             <div class="summary-row">
-
                 <span>Shipping</span>
-
                 <strong>
                     ${
                         shippingCharge === 0
@@ -220,17 +236,13 @@ function renderCheckoutSummary() {
                             )
                     }
                 </strong>
-
             </div>
 
             <div class="summary-row summary-total">
-
                 <span>Total</span>
-
                 <strong>
                     ${formatPrice(grandTotal)}
                 </strong>
-
             </div>
 
         </div>
@@ -238,27 +250,230 @@ function renderCheckoutSummary() {
 }
 
 /* =================================
-   Checkout Form
+   Create Order
+================================= */
+
+function createOrder(formData) {
+    const subtotal = getSubtotal();
+
+    const shippingCharge =
+        getShippingCharge();
+
+    const grandTotal =
+        subtotal + shippingCharge;
+
+    return {
+        id: generateOrderId(),
+
+        customer: {
+            fullName:
+                formData.get("fullName").trim(),
+
+            phone:
+                formData.get("phone").trim(),
+
+            email:
+                formData.get("email").trim()
+        },
+
+        deliveryAddress: {
+            address:
+                formData.get("address").trim(),
+
+            district:
+                formData.get("district").trim(),
+
+            postalCode:
+                formData.get("postalCode").trim()
+        },
+
+        paymentMethod:
+            formData.get("paymentMethod"),
+
+        items: cart.map((item) => ({
+            ...item
+        })),
+
+        totals: {
+            totalItems: getTotalQuantity(),
+            subtotal,
+            shippingCharge,
+            grandTotal
+        },
+
+        status: "pending",
+
+        createdAt:
+            new Date().toISOString()
+    };
+}
+
+/* =================================
+   Save Order
+================================= */
+
+function saveOrder(order) {
+    try {
+        const orders =
+            loadStorageArray(
+                ORDERS_STORAGE_KEY
+            );
+
+        orders.push(order);
+
+        localStorage.setItem(
+            ORDERS_STORAGE_KEY,
+            JSON.stringify(orders)
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Failed to save order:",
+            error
+        );
+
+        return false;
+    }
+}
+
+/* =================================
+   Clear Cart
+================================= */
+
+function clearCart() {
+    localStorage.removeItem(
+        CART_STORAGE_KEY
+    );
+}
+
+/* =================================
+   Show Order Success
+================================= */
+
+function showOrderSuccess(order) {
+    if (!checkoutContent || !checkoutEmpty) {
+        return;
+    }
+
+    checkoutContent.hidden = true;
+    checkoutEmpty.hidden = false;
+
+    checkoutEmpty.innerHTML = `
+        <div class="empty-cart">
+
+            <div
+                class="empty-cart-icon"
+                aria-hidden="true">
+                ✅
+            </div>
+
+            <h2>
+                Order Placed Successfully!
+            </h2>
+
+            <p>
+                Thank you,
+                <strong>
+                    ${order.customer.fullName}
+                </strong>.
+            </p>
+
+            <p>
+                Your Order ID:
+            </p>
+
+            <p>
+                <strong>
+                    ${order.id}
+                </strong>
+            </p>
+
+            <p>
+                Total:
+                <strong>
+                    ${formatPrice(
+                        order.totals.grandTotal
+                    )}
+                </strong>
+            </p>
+
+            <a
+                href="index.html"
+                class="btn btn-primary">
+                Continue Shopping
+            </a>
+
+        </div>
+    `;
+}
+
+/* =================================
+   Checkout Form Submission
 ================================= */
 
 if (checkoutForm) {
-
     checkoutForm.addEventListener(
         "submit",
         (event) => {
-
             event.preventDefault();
 
             if (cart.length === 0) {
+                renderEmptyCheckout();
                 return;
             }
 
-            console.log(
-                "Checkout form submitted."
-            );
-        }
-    );
-}
+            if (!checkoutForm.checkValidity()) {
+                checkoutForm.reportValidity();
+                return;
+            }
+
+            const formData =
+                new FormData(checkoutForm);
+
+            const phone =
+                formData
+                    .get("phone")
+                    .trim();
+
+            if (
+                !isValidBangladeshPhone(phone)
+            ) {
+                alert(
+                    "Please enter a valid Bangladesh mobile number. Example: 01712345678"
+                );
+
+                return;
+            }
+
+            const order =
+                createOrder(formData);
+
+            const orderSaved =
+                saveOrder(order);
+
+            if (!orderSaved) {
+                alert(
+                    "Sorry, your order could not be saved. Please try again."
+                );
+
+                return;
+            }
+
+            clearCart();
+
+localStorage.setItem(
+    "tbsp-last-order-id",
+    order.id
+);
+
+window.location.href =
+    `order-success.html?orderId=${encodeURIComponent(order.id)}`;
+        }   
+    );  
+}   
 
 /* =================================
    Initialize Checkout

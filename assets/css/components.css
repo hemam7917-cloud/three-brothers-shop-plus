@@ -1399,3 +1399,166 @@ footer a:hover {
     }
 }
 
+
+/* ===================================
+   ORDER SUCCESS PAGE
+=================================== */
+
+.order-success-page {
+    min-height: 70vh;
+
+    padding: 80px 0;
+
+    background:
+        var(--background-color);
+}
+
+.order-success-card {
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    padding: 40px;
+
+    background:
+        var(--surface-color);
+
+    color:
+        var(--text-color);
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 20px;
+
+    box-shadow:
+        var(--shadow-md);
+}
+
+.order-success-icon {
+    margin-bottom: 18px;
+
+    text-align: center;
+
+    font-size: 4rem;
+}
+
+.order-success-card > h1 {
+    margin-bottom: 12px;
+
+    text-align: center;
+}
+
+.order-success-card > p {
+    margin-bottom: 30px;
+
+    text-align: center;
+}
+
+.order-success-meta {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 30px;
+}
+
+.order-success-meta > div {
+    padding: 16px;
+
+    background:
+        var(--surface-color-2);
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius:
+        var(--radius-md);
+}
+
+.order-success-meta span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color:
+        var(--muted-text-color);
+
+    font-size: 0.9rem;
+}
+
+.order-status {
+    text-transform: capitalize;
+
+    color:
+        var(--secondary-color);
+}
+
+.order-success-section {
+    margin-top: 30px;
+
+    padding-top: 24px;
+
+    border-top:
+        1px solid
+        var(--border-color);
+}
+
+.order-success-section h2 {
+    margin-bottom: 18px;
+}
+
+.order-success-item {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 14px 0;
+
+    border-bottom:
+        1px solid
+        var(--border-color);
+}
+
+.order-success-item p {
+    margin-top: 5px;
+
+    color:
+        var(--muted-text-color);
+}
+
+.order-success-actions {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+
+    margin-top: 35px;
+}
+
+@media (max-width: 768px) {
+    .order-success-meta {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .order-success-card {
+        padding: 24px;
+    }
+
+    .order-success-actions {
+        flex-direction: column;
+    }
+}
+
