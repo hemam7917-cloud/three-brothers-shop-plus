@@ -2024,3 +2024,180 @@ footer a:hover {
         width: 100%;
     }
 }
+
+/* ===================================
+   GLOBAL TOAST NOTIFICATION
+=================================== */
+
+.app-toast {
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 10000;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 280px;
+    max-width: 380px;
+
+    padding: 14px 18px;
+
+    background:
+        var(--surface-color);
+
+    color:
+        var(--text-color);
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-left:
+        5px solid
+        var(--primary-color);
+
+    border-radius:
+        var(--radius-md);
+
+    box-shadow:
+        var(--shadow-lg);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform:
+        translateY(20px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        visibility 0.3s ease;
+}
+
+.app-toast.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translateY(0);
+}
+
+.app-toast-success {
+    border-left-color:
+        var(--primary-color);
+}
+
+.app-toast-info {
+    border-left-color:
+        #1976d2;
+}
+
+.app-toast-error {
+    border-left-color:
+        var(--accent-color);
+}
+
+.app-toast-icon {
+    flex: 0 0 auto;
+
+    font-size: 1.3rem;
+}
+
+.app-toast-message {
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+@media (max-width: 576px) {
+    .app-toast {
+        right: 16px;
+        bottom: 16px;
+        left: 16px;
+
+        min-width: 0;
+        max-width: none;
+    }
+}
+
+/* ===================================
+   BUTTON LOADING STATES
+=================================== */
+
+button.is-loading,
+button.is-success {
+    cursor: wait;
+}
+
+button.is-loading {
+    opacity: 0.8;
+}
+
+button.is-success {
+    cursor: default;
+}
+
+.button-spinner {
+    display: inline-block;
+
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid
+        currentColor;
+
+    border-right-color:
+        transparent;
+
+    border-radius: 50%;
+
+    animation:
+        button-spin 0.7s
+        linear infinite;
+}
+
+@keyframes button-spin {
+    to {
+        transform:
+            rotate(360deg);
+    }
+}
+
+button:disabled {
+    pointer-events: none;
+}
+
+
+/* ===================================
+   FORM VALIDATION
+=================================== */
+
+.form-error {
+    display: block;
+
+    min-height: 20px;
+
+    color: #d32f2f;
+
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.form-group input.is-invalid,
+.form-group textarea.is-invalid,
+.form-group select.is-invalid {
+    border-color: #d32f2f;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(211, 47, 47, 0.12);
+}
+
+.form-group input.is-invalid:focus,
+.form-group textarea.is-invalid:focus,
+.form-group select.is-invalid:focus {
+    outline-color: #d32f2f;
+}

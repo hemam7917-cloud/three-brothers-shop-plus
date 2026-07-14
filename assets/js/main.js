@@ -213,22 +213,27 @@ function loadCart() {
     }
 }
 
-const cart = loadCart();
+let cart =
+    loadStorageArray(
+        CART_STORAGE_KEY
+    );
 
-function saveCart() {
-    try {
-        localStorage.setItem(
-            CART_STORAGE_KEY,
-            JSON.stringify(cart)
+function refreshCartFromStorage() {
+    cart =
+        loadStorageArray(
+            CART_STORAGE_KEY
         );
 
-    } catch (error) {
-        console.error(
-            "Failed to save cart:",
-            error
-        );
-    }
+    updateCartCount();
 }
+
+window.addEventListener(
+    "pageshow",
+    () => {
+        refreshCartFromStorage();
+        refreshWishlistFromStorage();
+    }
+);
 
 const cartCount =
     document.getElementById("cart-count");
@@ -249,10 +254,6 @@ function updateCartCount() {
 }
 
 function addToCart(productId) {
-    if (typeof products === "undefined") {
-        return;
-    }
-
     const selectedProduct =
         products.find(
             (product) =>
@@ -260,8 +261,9 @@ function addToCart(productId) {
         );
 
     if (!selectedProduct) {
-        console.error(
-            "Product not found."
+        showToast(
+            "Product not found.",
+            "error"
         );
 
         return;
@@ -285,10 +287,16 @@ function addToCart(productId) {
     saveCart();
     updateCartCount();
 
-    console.log("Cart:", cart);
-}
+    showToast(
+        `${selectedProduct.name} added to cart.`,
+        "success"
+    );
 
-updateCartCount();
+    console.log(
+        "Cart:",
+        cart
+    );
+}
 
 
 /* =================================
@@ -298,48 +306,31 @@ updateCartCount();
 const WISHLIST_STORAGE_KEY =
     "tbsp-wishlist";
 
-function loadWishlist() {
-    try {
-        const savedWishlist =
-            localStorage.getItem(
-                WISHLIST_STORAGE_KEY
-            );
-
-        if (!savedWishlist) {
-            return [];
-        }
-
-        const parsedWishlist =
-            JSON.parse(savedWishlist);
-
-        return Array.isArray(parsedWishlist)
-            ? parsedWishlist
-            : [];
-
-    } catch (error) {
-        console.error(
-            "Failed to load wishlist:",
-            error
-        );
-
-        return [];
-    }
+function saveWishlist() {
+    saveStorageArray(
+        WISHLIST_STORAGE_KEY,
+        wishlist
+    );
 }
 
-let wishlist = loadWishlist();
+let wishlist =
+    loadStorageArray(
+        WISHLIST_STORAGE_KEY
+    );
 
-function saveWishlist() {
-    try {
-        localStorage.setItem(
-            WISHLIST_STORAGE_KEY,
-            JSON.stringify(wishlist)
+function refreshWishlistFromStorage() {
+    wishlist =
+        loadStorageArray(
+            WISHLIST_STORAGE_KEY
         );
 
-    } catch (error) {
-        console.error(
-            "Failed to save wishlist:",
-            error
-        );
+    updateWishlistCount();
+
+    if (
+        typeof products !== "undefined" &&
+        productGrid
+    ) {
+        applyProductFilters();
     }
 }
 
@@ -363,10 +354,6 @@ function isProductInWishlist(productId) {
 }
 
 function toggleWishlist(productId) {
-    if (typeof products === "undefined") {
-        return;
-    }
-
     const selectedProduct =
         products.find(
             (product) =>
@@ -374,15 +361,18 @@ function toggleWishlist(productId) {
         );
 
     if (!selectedProduct) {
-        console.error(
-            "Wishlist product not found."
+        showToast(
+            "Wishlist product not found.",
+            "error"
         );
 
         return;
     }
 
     const exists =
-        isProductInWishlist(productId);
+        isProductInWishlist(
+            productId
+        );
 
     if (exists) {
         wishlist =
@@ -390,18 +380,26 @@ function toggleWishlist(productId) {
                 (item) =>
                     item.id !== productId
             );
+
+        showToast(
+            `${selectedProduct.name} removed from wishlist.`,
+            "info"
+        );
     } else {
         wishlist.push({
             ...selectedProduct
         });
+
+        showToast(
+            `${selectedProduct.name} added to wishlist.`,
+            "success"
+        );
     }
 
     saveWishlist();
     updateWishlistCount();
     applyProductFilters();
 }
-
-updateWishlistCount();
 
 
 /* =================================
@@ -718,40 +716,34 @@ if (productGrid) {
                     ".cart-btn"
                 );
 
-            const wishlistButton =
-                event.target.closest(
-                    ".wishlist-btn"
-                );
+            if (!cartButton) return;
 
-            if (cartButton) {
-                const productId =
-                    Number(
-                        cartButton
-                            .dataset
-                            .productId
-                    );
-
-                addToCart(productId);
-
+            if (cartButton.disabled) {
                 return;
             }
 
-            if (wishlistButton) {
-                const productId =
-                    Number(
-                        wishlistButton
-                            .dataset
-                            .productId
-                    );
-
-                toggleWishlist(
-                    productId
+            const productId =
+                Number(
+                    cartButton.dataset.productId
                 );
-            }
+
+            setButtonLoading(
+                cartButton,
+                "Adding..."
+            );
+
+            addToCart(
+                productId
+            );
+
+            setButtonSuccess(
+                cartButton,
+                "✓ Added",
+                1000
+            );
         }
     );
 }
-
 
 /* =================================
    Initial Product Rendering

@@ -23,32 +23,7 @@ const wishlistGrid =
    Load Storage Array
 ================================= */
 
-function loadStorageArray(key) {
-    try {
-        const savedData =
-            localStorage.getItem(key);
 
-        if (!savedData) {
-            return [];
-        }
-
-        const parsedData =
-            JSON.parse(savedData);
-
-        return Array.isArray(parsedData)
-            ? parsedData
-            : [];
-
-    } catch (error) {
-
-        console.error(
-            `Failed to load ${key}:`,
-            error
-        );
-
-        return [];
-    }
-}
 
 let wishlist =
     loadStorageArray(
@@ -82,11 +57,7 @@ function saveCart() {
    Format Price
 ================================= */
 
-function formatPrice(amount) {
-    return `৳${Number(
-        amount
-    ).toLocaleString("en-BD")}`;
-}
+
 
 /* =================================
    Add To Cart
@@ -99,7 +70,14 @@ function addToCart(productId) {
                 item.id === productId
         );
 
-    if (!product) return;
+    if (!product) {
+        showToast(
+            "Product not found.",
+            "error"
+        );
+
+        return;
+    }
 
     const existingCartItem =
         cart.find(
@@ -117,8 +95,12 @@ function addToCart(productId) {
     }
 
     saveCart();
-}
 
+    showToast(
+        `${product.name} added to cart.`,
+        "success"
+    );
+}
 /* =================================
    Remove Wishlist Item
 ================================= */
@@ -126,6 +108,21 @@ function addToCart(productId) {
 function removeWishlistItem(
     productId
 ) {
+    const product =
+        wishlist.find(
+            (item) =>
+                item.id === productId
+        );
+
+    if (!product) {
+        showToast(
+            "Wishlist product not found.",
+            "error"
+        );
+
+        return;
+    }
+
     wishlist =
         wishlist.filter(
             (item) =>
@@ -133,8 +130,12 @@ function removeWishlistItem(
         );
 
     saveWishlist();
-
     renderWishlist();
+
+    showToast(
+        `${product.name} removed from wishlist.`,
+        "info"
+    );
 }
 
 /* =================================
@@ -287,9 +288,28 @@ if (wishlistGrid) {
                 );
             }
 
-            if (action === "cart") {
-                addToCart(productId);
-            }
+         if (action === "cart") {
+    if (
+        actionButton.disabled
+    ) {
+        return;
+    }
+
+    setButtonLoading(
+        actionButton,
+        "Adding..."
+    );
+
+    addToCart(
+        productId
+    );
+
+    setButtonSuccess(
+        actionButton,
+        "✓ Added",
+        1000
+    );
+}
         }
     );
 }

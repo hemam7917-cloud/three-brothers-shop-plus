@@ -23,31 +23,7 @@ const productDetailsContainer =
    Generic Storage Loader
 ================================= */
 
-function loadStorageArray(key) {
-    try {
-        const savedData =
-            localStorage.getItem(key);
 
-        if (!savedData) {
-            return [];
-        }
-
-        const parsedData =
-            JSON.parse(savedData);
-
-        return Array.isArray(parsedData)
-            ? parsedData
-            : [];
-
-    } catch (error) {
-        console.error(
-            `Failed to load ${key}:`,
-            error
-        );
-
-        return [];
-    }
-}
 
 /* =================================
    Read Product ID From URL
@@ -88,11 +64,7 @@ function findProductById(
    Format Price
 ================================= */
 
-function formatPrice(amount) {
-    return `৳${Number(
-        amount
-    ).toLocaleString("en-BD")}`;
-}
+
 
 /* =================================
    Wishlist Check
@@ -143,6 +115,11 @@ function addProductToCart(
         CART_STORAGE_KEY,
         JSON.stringify(cart)
     );
+
+    showToast(
+        `${product.name} added to cart.`,
+        "success"
+    );
 }
 
 /* =================================
@@ -169,10 +146,20 @@ function toggleProductWishlist(
                 (item) =>
                     item.id !== product.id
             );
+
+        showToast(
+            `${product.name} removed from wishlist.`,
+            "info"
+        );
     } else {
         wishlist.push({
             ...product
         });
+
+        showToast(
+            `${product.name} added to wishlist.`,
+            "success"
+        );
     }
 
     localStorage.setItem(
@@ -180,7 +167,6 @@ function toggleProductWishlist(
         JSON.stringify(wishlist)
     );
 }
-
 /* =================================
    Render Missing Product
 ================================= */
@@ -372,19 +358,38 @@ function setupProductDetailsEvents(
         );
 
     if (cartButton) {
-        cartButton.addEventListener(
-            "click",
-            () => {
-                addProductToCart(
-                    product
-                );
+        addToCartButton.addEventListener(
+    "click",
+    () => {
+        if (
+            addToCartButton.disabled
+        ) {
+            return;
+        }
+
+        setButtonLoading(
+            addToCartButton,
+            "Adding..."
+        );
+
+        addProductToCart(
+            selectedProduct
+        );
+
+        setButtonSuccess(
+            addToCartButton,
+            "✓ Added to Cart",
+            1200
+        );
+    }
+);
 
                 if (status) {
                     status.textContent =
                         `${product.name} added to cart.`;
                 }
             }
-        );
+        
     }
 
     if (wishlistButton) {
@@ -401,7 +406,7 @@ function setupProductDetailsEvents(
             }
         );
     }
-}
+
 
 /* =================================
    Initialize

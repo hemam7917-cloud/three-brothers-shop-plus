@@ -60,52 +60,10 @@ const wishlistCount =
    Storage Helpers
 ================================= */
 
-function loadStorageArray(key) {
-    try {
-        const savedData =
-            localStorage.getItem(key);
-
-        if (!savedData) {
-            return [];
-        }
-
-        const parsedData =
-            JSON.parse(savedData);
-
-        return Array.isArray(parsedData)
-            ? parsedData
-            : [];
-
-    } catch (error) {
-
-        console.error(
-            `Failed to load ${key}:`,
-            error
-        );
-
-        return [];
-    }
-}
 
 
-function saveStorageArray(
-    key,
-    data
-) {
-    try {
-        localStorage.setItem(
-            key,
-            JSON.stringify(data)
-        );
 
-    } catch (error) {
 
-        console.error(
-            `Failed to save ${key}:`,
-            error
-        );
-    }
-}
 
 
 /* =================================
@@ -178,7 +136,14 @@ function addToCart(productId) {
                 item.id === productId
         );
 
-    if (!product) return;
+    if (!product) {
+        showToast(
+            "Product not found.",
+            "error"
+        );
+
+        return;
+    }
 
     const existingCartItem =
         cart.find(
@@ -201,6 +166,11 @@ function addToCart(productId) {
     );
 
     updateCartCount();
+
+    showToast(
+        `${product.name} added to cart.`,
+        "success"
+    );
 }
 
 
@@ -217,7 +187,14 @@ function toggleWishlist(
                 item.id === productId
         );
 
-    if (!product) return;
+    if (!product) {
+        showToast(
+            "Product not found.",
+            "error"
+        );
+
+        return;
+    }
 
     const exists =
         isProductInWishlist(
@@ -230,10 +207,20 @@ function toggleWishlist(
                 (item) =>
                     item.id !== productId
             );
+
+        showToast(
+            `${product.name} removed from wishlist.`,
+            "info"
+        );
     } else {
         wishlist.push({
             ...product
         });
+
+        showToast(
+            `${product.name} added to wishlist.`,
+            "success"
+        );
     }
 
     saveStorageArray(
@@ -242,20 +229,14 @@ function toggleWishlist(
     );
 
     updateWishlistCount();
-
     applyCatalogFilters();
 }
-
 
 /* =================================
    Format Price
 ================================= */
 
-function formatPrice(amount) {
-    return `৳${Number(
-        amount
-    ).toLocaleString("en-BD")}`;
-}
+
 
 
 /* =================================
@@ -659,21 +640,88 @@ if (catalogGrid) {
                     .dataset
                     .action;
 
-            if (
-                action === "cart"
-            ) {
+            if (action === "cart") {
+    if (
+        actionButton.disabled
+    ) {
+        return;
+    }
+
+    setButtonLoading(
+        actionButton,
+        "Adding..."
+    );
+
+    addToCart(
+        productId
+    );
+
+    setButtonSuccess(
+        actionButton,
+        "✓ Added",
+        1000
+    );
+}
+
+          if (catalogGrid) {
+    catalogGrid.addEventListener(
+        "click",
+        (event) => {
+            const actionButton =
+                event.target.closest(
+                    "[data-action]"
+                );
+
+            if (!actionButton) {
+                return;
+            }
+
+            const productId =
+                Number(
+                    actionButton
+                        .dataset
+                        .productId
+                );
+
+            const action =
+                actionButton
+                    .dataset
+                    .action;
+
+            if (action === "cart") {
+                if (
+                    actionButton.disabled
+                ) {
+                    return;
+                }
+
+                setButtonLoading(
+                    actionButton,
+                    "Adding..."
+                );
+
                 addToCart(
                     productId
+                );
+
+                setButtonSuccess(
+                    actionButton,
+                    "✓ Added",
+                    1000
                 );
             }
 
             if (
-                action === "wishlist"
+                action ===
+                "wishlist"
             ) {
                 toggleWishlist(
                     productId
                 );
             }
+        }
+    );
+}
         }
     );
 }

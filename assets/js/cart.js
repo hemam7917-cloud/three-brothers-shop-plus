@@ -34,21 +34,18 @@ function loadCart() {
     }
 }
 
-let cart = loadCart();
-
+let cart =
+    loadStorageArray(
+        CART_STORAGE_KEY
+    );
 /* =================================
    Save Cart
 ================================= */
-
 function saveCart() {
-    try {
-        localStorage.setItem(
-            CART_STORAGE_KEY,
-            JSON.stringify(cart)
-        );
-    } catch (error) {
-        console.error("Failed to save cart:", error);
-    }
+    saveStorageArray(
+        CART_STORAGE_KEY,
+        cart
+    );
 }
 
 /* =================================
@@ -86,46 +83,13 @@ function getCartSubtotal() {
 
 /* =================================
    Currency Formatting
-================================= */
-
-function formatPrice(amount) {
-    return `৳${Number(amount).toLocaleString("en-BD")}`;
-}
+================================= 
 
 
 /* =================================
    Toast Notification
 ================================= */
 
-function showToast(message) {
-    const oldToast = document.querySelector(".toast-notification");
-
-    if (oldToast) {
-        oldToast.remove();
-    }
-
-    const toast = document.createElement("div");
-
-    toast.className = "toast-notification";
-    toast.setAttribute("role", "status");
-    toast.setAttribute("aria-live", "polite");
-
-    toast.textContent = message;
-
-    document.body.appendChild(toast);
-
-    requestAnimationFrame(() => {
-        toast.classList.add("show");
-    });
-
-    setTimeout(() => {
-        toast.classList.remove("show");
-
-        setTimeout(() => {
-            toast.remove();
-        }, 300);
-    }, 2500);
-}
 
 /* =================================
    Increase Quantity

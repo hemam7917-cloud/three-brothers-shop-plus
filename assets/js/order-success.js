@@ -4,7 +4,11 @@
    Storage Configuration
 ================================= */
 
-const ORDERS_STORAGE_KEY = "tbsp-orders";
+const ORDERS_STORAGE_KEY =
+    "tbsp-orders";
+
+const LAST_ORDER_ID_KEY =
+    "tbsp-last-order-id";
 
 /* =================================
    DOM Element
@@ -20,45 +24,30 @@ const orderSuccessContent =
 ================================= */
 
 function loadOrders() {
-    try {
-        const savedOrders =
-            localStorage.getItem(
-                ORDERS_STORAGE_KEY
-            );
-
-        if (!savedOrders) {
-            return [];
-        }
-
-        const parsedOrders =
-            JSON.parse(savedOrders);
-
-        return Array.isArray(parsedOrders)
-            ? parsedOrders
-            : [];
-
-    } catch (error) {
-
-        console.error(
-            "Failed to load orders:",
-            error
-        );
-
-        return [];
-    }
+    return loadStorageArray(
+        ORDERS_STORAGE_KEY
+    );
 }
 
 /* =================================
-   Helpers
+   Format Date
 ================================= */
 
-function formatPrice(amount) {
-    return `৳${Number(amount).toLocaleString("en-BD")}`;
-}
-
-function formatDate(dateString) {
+function formatDate(
+    dateString
+) {
     const date =
-        new Date(dateString);
+        new Date(
+            dateString
+        );
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+        return "Unknown";
+    }
 
     return date.toLocaleString(
         "en-BD"
@@ -69,25 +58,47 @@ function formatDate(dateString) {
    Read Order ID
 ================================= */
 
-function getOrderIdFromUrl() {
+function getRequestedOrderId() {
     const params =
         new URLSearchParams(
             window.location.search
         );
 
-    return params.get("orderId");
+    const urlOrderId =
+        params.get(
+            "orderId"
+        );
+
+    const lastOrderId =
+        localStorage.getItem(
+            LAST_ORDER_ID_KEY
+        );
+
+    return (
+        urlOrderId ||
+        lastOrderId
+    );
 }
 
 /* =================================
    Find Order
 ================================= */
 
-function findOrder(orderId) {
-    const orders = loadOrders();
+function findOrder(
+    orderId
+) {
+    if (!orderId) {
+        return null;
+    }
+
+    const orders =
+        loadOrders();
 
     return orders.find(
-        (order) => order.id === orderId
-    );
+        (order) =>
+            String(order.id) ===
+            String(orderId)
+    ) || null;
 }
 
 /* =================================
@@ -95,7 +106,11 @@ function findOrder(orderId) {
 ================================= */
 
 function renderMissingOrder() {
-    if (!orderSuccessContent) return;
+    if (
+        !orderSuccessContent
+    ) {
+        return;
+    }
 
     orderSuccessContent.innerHTML = `
         <div class="order-success-card">
@@ -111,13 +126,16 @@ function renderMissingOrder() {
             </h1>
 
             <p>
-                We could not find the requested order.
+                We could not find
+                the requested order.
             </p>
 
             <a
                 href="index.html"
                 class="btn btn-primary">
+
                 Return Home
+
             </a>
 
         </div>
@@ -128,44 +146,65 @@ function renderMissingOrder() {
    Render Order
 ================================= */
 
-function renderOrderSuccess(order) {
-    if (!orderSuccessContent) return;
+function renderOrderSuccess(
+    order
+) {
+    if (
+        !orderSuccessContent
+    ) {
+        return;
+    }
 
-    const orderItemsHTML = order.items
-        .map((item) => {
-            const quantity =
-                Number(item.quantity || 0);
+    const orderItems =
+        Array.isArray(
+            order.items
+        )
+            ? order.items
+            : [];
 
-            const price =
-                Number(item.price || 0);
+    const orderItemsHTML =
+        orderItems
+            .map((item) => {
+                const quantity =
+                    Number(
+                        item.quantity || 0
+                    );
 
-            return `
-                <div class="order-success-item">
+                const price =
+                    Number(
+                        item.price || 0
+                    );
 
-                    <div>
+                return `
+                    <div class="order-success-item">
+
+                        <div>
+
+                            <strong>
+                                ${item.name}
+                            </strong>
+
+                            <p>
+                                ${quantity}
+                                ×
+                                ${formatPrice(
+                                    price
+                                )}
+                            </p>
+
+                        </div>
 
                         <strong>
-                            ${item.name}
+                            ${formatPrice(
+                                price *
+                                quantity
+                            )}
                         </strong>
 
-                        <p>
-                            ${quantity}
-                            ×
-                            ${formatPrice(price)}
-                        </p>
-
                     </div>
-
-                    <strong>
-                        ${formatPrice(
-                            price * quantity
-                        )}
-                    </strong>
-
-                </div>
-            `;
-        })
-        .join("");
+                `;
+            })
+            .join("");
 
     orderSuccessContent.innerHTML = `
         <div class="order-success-card">
@@ -183,36 +222,55 @@ function renderOrderSuccess(order) {
             <p>
                 Thank you,
                 <strong>
-                    ${order.customer.fullName}
+                    ${
+                        order.customer
+                            ?.fullName ||
+                        "Customer"
+                    }
                 </strong>.
             </p>
 
             <div class="order-success-meta">
 
                 <div>
-                    <span>Order ID</span>
+
+                    <span>
+                        Order ID
+                    </span>
 
                     <strong>
                         ${order.id}
                     </strong>
+
                 </div>
 
                 <div>
-                    <span>Order Date</span>
+
+                    <span>
+                        Order Date
+                    </span>
 
                     <strong>
                         ${formatDate(
                             order.createdAt
                         )}
                     </strong>
+
                 </div>
 
                 <div>
-                    <span>Status</span>
+
+                    <span>
+                        Status
+                    </span>
 
                     <strong class="order-status">
-                        ${order.status}
+                        ${
+                            order.status ||
+                            "pending"
+                        }
                     </strong>
+
                 </div>
 
             </div>
@@ -225,17 +283,37 @@ function renderOrderSuccess(order) {
 
                 <p>
                     <strong>
-                        ${order.customer.fullName}
+                        ${
+                            order.customer
+                                ?.fullName ||
+                            ""
+                        }
                     </strong>
                 </p>
 
                 <p>
-                    ${order.customer.phone}
+                    ${
+                        order.customer
+                            ?.phone ||
+                        ""
+                    }
                 </p>
 
                 <p>
-                    ${order.deliveryAddress.address},
-                    ${order.deliveryAddress.district}
+                    ${
+                        order.deliveryAddress
+                            ?.address ||
+                        ""
+                    }${
+                        order.deliveryAddress
+                            ?.district
+                            ? `, ${
+                                order
+                                    .deliveryAddress
+                                    .district
+                            }`
+                            : ""
+                    }
                 </p>
 
             </div>
@@ -262,7 +340,9 @@ function renderOrderSuccess(order) {
 
                     <strong>
                         ${formatPrice(
-                            order.totals.subtotal
+                            order.totals
+                                ?.subtotal ||
+                            0
                         )}
                     </strong>
 
@@ -278,12 +358,15 @@ function renderOrderSuccess(order) {
                         ${
                             Number(
                                 order.totals
-                                    .shippingCharge
+                                    ?.shippingCharge ||
+                                0
                             ) === 0
                                 ? "FREE"
                                 : formatPrice(
-                                    order.totals
-                                        .shippingCharge
+                                    order
+                                        .totals
+                                        ?.shippingCharge ||
+                                    0
                                 )
                         }
                     </strong>
@@ -301,7 +384,8 @@ function renderOrderSuccess(order) {
                     <strong>
                         ${formatPrice(
                             order.totals
-                                .grandTotal
+                                ?.grandTotal ||
+                            0
                         )}
                     </strong>
 
@@ -314,13 +398,17 @@ function renderOrderSuccess(order) {
                 <a
                     href="index.html"
                     class="btn btn-primary">
+
                     Continue Shopping
+
                 </a>
 
                 <a
                     href="products.html"
                     class="btn btn-outline">
+
                     Browse Products
+
                 </a>
 
             </div>
@@ -333,18 +421,33 @@ function renderOrderSuccess(order) {
    Initialize
 ================================= */
 
-const orderId =
-    getOrderIdFromUrl();
+const requestedOrderId =
+    getRequestedOrderId();
 
-if (!orderId) {
+const selectedOrder =
+    findOrder(
+        requestedOrderId
+    );
+
+console.log(
+    "Requested Order ID:",
+    requestedOrderId
+);
+
+console.log(
+    "Saved Orders:",
+    loadOrders()
+);
+
+console.log(
+    "Selected Order:",
+    selectedOrder
+);
+
+if (!selectedOrder) {
     renderMissingOrder();
 } else {
-    const order =
-        findOrder(orderId);
-
-    if (!order) {
-        renderMissingOrder();
-    } else {
-        renderOrderSuccess(order);
-    }
+    renderOrderSuccess(
+        selectedOrder
+    );
 }
