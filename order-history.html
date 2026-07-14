@@ -144,6 +144,152 @@
                 aria-live="polite">
             </section>
 
+            <section
+    class="order-history-controls"
+    aria-label="Order History Filters">
+
+    <div class="order-search-group">
+
+        <label
+            for="order-search"
+            class="order-control-label">
+
+            Search Orders
+
+        </label>
+
+        <div class="order-search-wrapper">
+
+            <span
+                class="order-search-icon"
+                aria-hidden="true">
+
+                🔍
+
+            </span>
+
+            <input
+                type="search"
+                id="order-search"
+                class="order-search-input"
+                placeholder="Search by Order ID..."
+                autocomplete="off">
+
+        </div>
+
+    </div>
+
+
+    <div class="order-filter-group">
+
+        <label
+            for="order-status-filter"
+            class="order-control-label">
+
+            Status
+
+        </label>
+
+        <select
+            id="order-status-filter"
+            class="order-filter-select">
+
+            <option value="all">
+                All Statuses
+            </option>
+
+            <option value="pending">
+                Pending
+            </option>
+
+            <option value="confirmed">
+                Confirmed
+            </option>
+
+            <option value="processing">
+                Processing
+            </option>
+
+            <option value="shipped">
+                Shipped
+            </option>
+
+            <option value="delivered">
+                Delivered
+            </option>
+
+            <option value="cancelled">
+                Cancelled
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="order-sort-group">
+
+        <label
+            for="order-sort"
+            class="order-control-label">
+
+            Sort By
+
+        </label>
+
+        <select
+            id="order-sort"
+            class="order-filter-select">
+
+            <option value="newest">
+                Newest First
+            </option>
+
+            <option value="oldest">
+                Oldest First
+            </option>
+
+            <option value="highest">
+                Highest Total
+            </option>
+
+            <option value="lowest">
+                Lowest Total
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="order-reset-group">
+
+        <button
+            type="button"
+            id="reset-order-filters"
+            class="btn btn-outline order-reset-btn">
+
+            Reset
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<div class="order-results-bar">
+
+    <p
+        id="order-results-count"
+        aria-live="polite">
+
+        Loading orders...
+
+    </p>
+
+</div>
+
         </div>
 
     </main>

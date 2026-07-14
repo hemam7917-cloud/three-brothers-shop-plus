@@ -2674,3 +2674,207 @@ button:disabled {
         gap: 4px;
     }
 }
+
+/* ===================================
+   ORDER HISTORY CONTROLS
+=================================== */
+
+.order-history-controls {
+    display: grid;
+
+    grid-template-columns:
+        minmax(220px, 2fr)
+        minmax(160px, 1fr)
+        minmax(160px, 1fr)
+        auto;
+
+    gap: 18px;
+
+    align-items: end;
+
+    margin-bottom: 20px;
+
+    padding: 22px;
+
+    background:
+        var(--surface-color);
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 18px;
+
+    box-shadow:
+        var(--shadow-sm);
+}
+
+
+.order-search-group,
+.order-filter-group,
+.order-sort-group {
+    min-width: 0;
+}
+
+
+.order-control-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color:
+        var(--text-color);
+
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+
+.order-search-wrapper {
+    position: relative;
+}
+
+
+.order-search-icon {
+    position: absolute;
+
+    top: 50%;
+    left: 14px;
+
+    transform:
+        translateY(-50%);
+
+    pointer-events: none;
+}
+
+
+.order-search-input,
+.order-filter-select {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding:
+        12px
+        14px;
+
+    background:
+        var(--surface-color);
+
+    color:
+        var(--text-color);
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius:
+        var(--radius-md);
+
+    font: inherit;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.order-search-input {
+    padding-left: 44px;
+}
+
+
+.order-search-input:focus,
+.order-filter-select:focus {
+    outline: none;
+
+    border-color:
+        var(--primary-color);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            46,
+            125,
+            50,
+            0.12
+        );
+}
+
+
+.order-reset-group {
+    display: flex;
+}
+
+
+.order-reset-btn {
+    min-height: 48px;
+
+    white-space: nowrap;
+}
+
+
+/* ===================================
+   ORDER RESULTS BAR
+=================================== */
+
+.order-results-bar {
+    display: flex;
+
+    align-items: center;
+
+    justify-content:
+        space-between;
+
+    margin-bottom: 20px;
+}
+
+
+.order-results-bar p {
+    margin: 0;
+
+    color:
+        var(--muted-text-color);
+
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+/* ===================================
+   ORDER CONTROLS RESPONSIVE
+=================================== */
+
+@media (
+    max-width: 992px
+) {
+
+    .order-history-controls {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (
+    max-width: 576px
+) {
+
+    .order-history-controls {
+        grid-template-columns:
+            1fr;
+
+        padding: 18px;
+    }
+
+
+    .order-reset-group {
+        width: 100%;
+    }
+
+
+    .order-reset-btn {
+        width: 100%;
+    }
+
+}
