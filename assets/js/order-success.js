@@ -10,6 +10,179 @@ const ORDERS_STORAGE_KEY =
 const LAST_ORDER_ID_KEY =
     "tbsp-last-order-id";
 
+
+    /* =================================
+   Order Tracking Configuration
+================================= */
+
+const ORDER_STATUS_STEPS = [
+    {
+        key: "pending",
+        label: "Order Placed",
+        description:
+            "Your order has been received."
+    },
+    {
+        key: "confirmed",
+        label: "Order Confirmed",
+        description:
+            "Your order has been confirmed."
+    },
+    {
+        key: "processing",
+        label: "Processing",
+        description:
+            "Your products are being prepared."
+    },
+    {
+        key: "shipped",
+        label: "Shipped",
+        description:
+            "Your order has left our facility."
+    },
+    {
+        key: "delivered",
+        label: "Delivered",
+        description:
+            "Your order has been delivered."
+    }
+];
+
+
+/* =================================
+   Create Order Tracking Timeline
+================================= */
+
+function createOrderTrackingHTML(
+    status
+) {
+    const normalizedStatus =
+        normalizeOrderStatus(
+            status
+        );
+
+    /* Cancelled order */
+    if (
+        normalizedStatus ===
+        "cancelled"
+    ) {
+        return `
+            <div class="order-cancelled-state">
+
+                <div
+                    class="order-cancelled-icon"
+                    aria-hidden="true">
+                    ❌
+                </div>
+
+                <div>
+
+                    <h3>
+                        Order Cancelled
+                    </h3>
+
+                    <p>
+                        This order has been cancelled.
+                    </p>
+
+                </div>
+
+            </div>
+        `;
+    }
+
+    const currentStatusIndex =
+        getOrderStatusIndex(
+            normalizedStatus
+        );
+
+    const safeStatusIndex =
+        currentStatusIndex >= 0
+            ? currentStatusIndex
+            : 0;
+
+    const timelineHTML =
+        ORDER_STATUS_STEPS
+            .map(
+                (
+                    step,
+                    index
+                ) => {
+                    let stateClass =
+                        "upcoming";
+
+                    let icon =
+                        "○";
+
+                    if (
+                        index <
+                        safeStatusIndex
+                    ) {
+                        stateClass =
+                            "completed";
+
+                        icon =
+                            "✓";
+                    }
+
+                    if (
+                        index ===
+                        safeStatusIndex
+                    ) {
+                        stateClass =
+                            "current";
+
+                        icon =
+                            "●";
+                    }
+
+                    return `
+                        <div
+                            class="
+                                tracking-step
+                                tracking-step-${stateClass}
+                            ">
+
+                            <div
+                                class="tracking-step-marker"
+                                aria-hidden="true">
+
+                                ${icon}
+
+                            </div>
+
+                            <div
+                                class="tracking-step-content">
+
+                                <h3>
+                                    ${step.label}
+                                </h3>
+
+                                <p>
+                                    ${step.description}
+                                </p>
+
+                            </div>
+
+                        </div>
+                    `;
+                }
+            )
+            .join("");
+
+    return `
+        <div
+            class="order-tracking-timeline"
+            aria-label="Order tracking progress">
+
+            ${timelineHTML}
+
+        </div>
+    `;
+}
+
+
+
 /* =================================
    DOM Element
 ================================= */
@@ -52,6 +225,41 @@ function formatDate(
     return date.toLocaleString(
         "en-BD"
     );
+}
+
+/* =================================
+   Normalize Order Status
+================================= */
+
+function normalizeOrderStatus(
+    status
+) {
+    return String(
+        status || "pending"
+    )
+        .trim()
+        .toLowerCase();
+}
+
+
+/* =================================
+   Get Order Status Index
+================================= */
+
+function getOrderStatusIndex(
+    status
+) {
+    const normalizedStatus =
+        normalizeOrderStatus(
+            status
+        );
+
+    return ORDER_STATUS_STEPS
+        .findIndex(
+            (step) =>
+                step.key ===
+                normalizedStatus
+        );
 }
 
 /* =================================
@@ -274,6 +482,20 @@ function renderOrderSuccess(
                 </div>
 
             </div>
+
+            <div class="order-success-section">
+
+    <h2>
+        Order Tracking
+    </h2>
+
+    ${
+        createOrderTrackingHTML(
+            order.status
+        )
+    }
+
+</div>
 
             <div class="order-success-section">
 

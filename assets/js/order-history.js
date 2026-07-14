@@ -7,6 +7,19 @@
 const ORDERS_STORAGE_KEY =
     "tbsp-orders";
 
+
+    /* =================================
+   Order Status Steps
+================================= */
+
+const ORDER_STATUS_STEPS = [
+    "pending",
+    "confirmed",
+    "processing",
+    "shipped",
+    "delivered"
+];
+
 /* =================================
    DOM Element
 ================================= */
@@ -50,6 +63,61 @@ function formatOrderDate(
         "en-BD"
     );
 }
+
+/* =================================
+   Get Order Progress
+================================= */
+
+function getOrderProgress(
+    status
+) {
+    const normalizedStatus =
+        String(
+            status || "pending"
+        )
+            .trim()
+            .toLowerCase();
+
+    if (
+        normalizedStatus ===
+        "cancelled"
+    ) {
+        return {
+            percentage: 0,
+            label: "Cancelled",
+            cancelled: true
+        };
+    }
+
+    const currentIndex =
+        ORDER_STATUS_STEPS
+            .indexOf(
+                normalizedStatus
+            );
+
+    const safeIndex =
+        currentIndex >= 0
+            ? currentIndex
+            : 0;
+
+    const percentage =
+        (
+            safeIndex /
+            (
+                ORDER_STATUS_STEPS.length -
+                1
+            )
+        ) * 100;
+
+    return {
+        percentage,
+        label:
+            normalizedStatus,
+        cancelled: false
+    };
+}
+
+
 
 /* =================================
    Get Status Class
@@ -164,6 +232,11 @@ function renderOrderHistory() {
                         "pending"
                     );
 
+                    const progress =
+    getOrderProgress(
+        status
+    );
+
                 return `
                     <article class="order-history-card">
 
@@ -234,6 +307,55 @@ function renderOrderHistory() {
                             </div>
 
                         </div>
+
+                        <div
+    class="
+        order-progress
+        ${
+            progress.cancelled
+                ? "order-progress-cancelled"
+                : ""
+        }
+    ">
+
+    <div class="order-progress-header">
+
+        <span>
+            Order Progress
+        </span>
+
+        <strong>
+            ${
+                progress.label
+                    .replace(
+                        /-/g,
+                        " "
+                    )
+            }
+        </strong>
+
+    </div>
+
+    <div
+        class="order-progress-track"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="${
+            progress.percentage
+        }">
+
+        <div
+            class="order-progress-bar"
+            style="
+                width:
+                ${progress.percentage}%;
+            ">
+        </div>
+
+    </div>
+
+</div>
 
                         <div class="order-history-actions">
 

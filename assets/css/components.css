@@ -2412,3 +2412,265 @@ button:disabled {
         width: 100%;
     }
 }
+
+
+/* ===================================
+   ORDER TRACKING TIMELINE
+=================================== */
+
+.order-tracking-timeline {
+    position: relative;
+
+    display: grid;
+    gap: 0;
+
+    padding-left: 10px;
+}
+
+.tracking-step {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        46px
+        minmax(0, 1fr);
+
+    gap: 16px;
+
+    min-height: 90px;
+}
+
+.tracking-step:not(:last-child)::after {
+    content: "";
+
+    position: absolute;
+
+    top: 42px;
+    left: 21px;
+
+    width: 3px;
+
+    height:
+        calc(100% - 16px);
+
+    background:
+        var(--border-color);
+}
+
+.tracking-step-marker {
+    position: relative;
+
+    z-index: 2;
+
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        var(--surface-color-2);
+
+    color:
+        var(--muted-text-color);
+
+    border:
+        3px solid
+        var(--border-color);
+
+    border-radius: 50%;
+
+    font-weight: 800;
+}
+
+.tracking-step-content {
+    padding-top: 4px;
+}
+
+.tracking-step-content h3 {
+    margin-bottom: 6px;
+
+    font-size: 1rem;
+}
+
+.tracking-step-content p {
+    color:
+        var(--muted-text-color);
+}
+
+
+/* Completed Step */
+
+.tracking-step-completed
+.tracking-step-marker {
+    background:
+        var(--primary-color);
+
+    color: #fff;
+
+    border-color:
+        var(--primary-color);
+}
+
+.tracking-step-completed:not(:last-child)::after {
+    background:
+        var(--primary-color);
+}
+
+
+/* Current Step */
+
+.tracking-step-current
+.tracking-step-marker {
+    background:
+        var(--surface-color);
+
+    color:
+        var(--primary-color);
+
+    border-color:
+        var(--primary-color);
+
+    box-shadow:
+        0 0 0 5px
+        rgba(
+            46,
+            125,
+            50,
+            0.12
+        );
+}
+
+
+/* ===================================
+   CANCELLED ORDER
+=================================== */
+
+.order-cancelled-state {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 20px;
+
+    background:
+        rgba(
+            211,
+            47,
+            47,
+            0.1
+        );
+
+    color:
+        #d32f2f;
+
+    border:
+        1px solid
+        rgba(
+            211,
+            47,
+            47,
+            0.25
+        );
+
+    border-radius:
+        var(--radius-md);
+}
+
+.order-cancelled-icon {
+    flex: 0 0 auto;
+
+    font-size: 2rem;
+}
+
+
+/* ===================================
+   ORDER HISTORY PROGRESS
+=================================== */
+
+.order-progress {
+    margin-top: 22px;
+}
+
+.order-progress-header {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 10px;
+
+    text-transform: capitalize;
+}
+
+.order-progress-header span {
+    color:
+        var(--muted-text-color);
+}
+
+.order-progress-track {
+    width: 100%;
+    height: 10px;
+
+    overflow: hidden;
+
+    background:
+        var(--surface-color-2);
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 999px;
+}
+
+.order-progress-bar {
+    height: 100%;
+
+    background:
+        var(--primary-color);
+
+    border-radius: inherit;
+
+    transition:
+        width 0.4s ease;
+}
+
+
+/* Cancelled Progress */
+
+.order-progress-cancelled
+.order-progress-bar {
+    background:
+        #d32f2f;
+}
+
+
+@media (max-width: 576px) {
+    .tracking-step {
+        grid-template-columns:
+            40px
+            minmax(0, 1fr);
+
+        gap: 12px;
+    }
+
+    .tracking-step-marker {
+        width: 38px;
+        height: 38px;
+    }
+
+    .tracking-step:not(:last-child)::after {
+        left: 18px;
+        top: 36px;
+    }
+
+    .order-progress-header {
+        flex-direction: column;
+
+        gap: 4px;
+    }
+}
