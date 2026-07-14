@@ -9,12 +9,16 @@
         content="width=device-width, initial-scale=1.0">
 
     <title>
-        Wishlist | Three Brothers Shop Plus
+        Order History | Three Brothers Shop Plus
     </title>
 
     <meta
         name="description"
-        content="View your saved wishlist products at Three Brothers Shop Plus.">
+        content="View your previous orders from Three Brothers Shop Plus.">
+
+    <link
+        rel="icon"
+        href="assets/images/logo/favicon.ico">
 
     <link
         rel="stylesheet"
@@ -46,7 +50,7 @@
             <div class="container">
 
                 <p>
-                    ❤️ Your Saved Products
+                    📦 View Your Previous Orders
                 </p>
 
             </div>
@@ -59,7 +63,8 @@
 
                 <a
                     href="index.html"
-                    class="logo">
+                    class="logo"
+                    aria-label="Three Brothers Shop Plus Home">
 
                     <img
                         src="assets/images/logo/logo.webp"
@@ -69,8 +74,7 @@
 
                 </a>
 
-                <nav
-                    aria-label="Primary Navigation">
+                <nav aria-label="Primary Navigation">
 
                     <ul>
 
@@ -87,17 +91,24 @@
                         </li>
 
                         <li>
+                            <a href="wishlist.html">
+                                Wishlist
+                            </a>
+                        </li>
+
+                        <li>
                             <a href="cart.html">
                                 Cart
                             </a>
                         </li>
 
                         <li>
-    <a href="order-history.html">
-        Orders
-    </a>
-</li>
-
+                            <a
+                                href="order-history.html"
+                                aria-current="page">
+                                Orders
+                            </a>
+                        </li>
 
                     </ul>
 
@@ -111,26 +122,27 @@
 
     <main
         id="main-content"
-        class="wishlist-page">
+        class="order-history-page">
 
         <div class="container">
 
             <div class="section-header">
 
                 <h1>
-                    My Wishlist
+                    Order History
                 </h1>
 
                 <p>
-                    Products you saved for later.
+                    Review your previous orders.
                 </p>
 
             </div>
 
-            <div
-                id="wishlist-grid"
-                class="product-grid">
-            </div>
+            <section
+                id="order-history-list"
+                class="order-history-list"
+                aria-live="polite">
+            </section>
 
         </div>
 
@@ -149,8 +161,8 @@
 
     </footer>
 
-   <script src="assets/js/utils.js"></script>
-<script src="assets/js/wishlist.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/order-history.js"></script>
 
 </body>
 
