@@ -1537,13 +1537,20 @@ footer a:hover {
 .order-success-actions {
     display: flex;
 
-    justify-content: center;
+    justify-content:
+        center;
 
-    gap: 14px;
+    align-items:
+        center;
 
-    flex-wrap: wrap;
+    flex-wrap:
+        wrap;
 
-    margin-top: 35px;
+    gap:
+        14px;
+
+    margin-top:
+        35px;
 }
 
 @media (max-width: 768px) {
@@ -2353,11 +2360,22 @@ button:disabled {
 
 .order-history-actions {
     display: flex;
-    justify-content: flex-end;
 
-    margin-top: 22px;
+    justify-content:
+        flex-end;
+
+    align-items:
+        center;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        12px;
+
+    margin-top:
+        22px;
 }
-
 .order-history-empty {
     padding: 60px 24px;
 
@@ -2875,6 +2893,102 @@ button:disabled {
 
     .order-reset-btn {
         width: 100%;
+    }
+
+}
+
+/* ===================================
+   DANGER BUTTON
+=================================== */
+
+.btn-danger {
+    background:
+        #d32f2f;
+
+    color:
+        #ffffff;
+
+    border:
+        1px solid
+        #d32f2f;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.btn-danger:hover {
+    background:
+        #b71c1c;
+
+    border-color:
+        #b71c1c;
+
+    transform:
+        translateY(-2px);
+}
+
+.btn-danger:focus-visible {
+    outline:
+        3px solid
+        rgba(
+            211,
+            47,
+            47,
+            0.25
+        );
+
+    outline-offset:
+        3px;
+}
+
+
+.order-progress-cancelled
+.order-progress-track {
+    border-color:
+        rgba(
+            211,
+            47,
+            47,
+            0.35
+        );
+
+    background:
+        rgba(
+            211,
+            47,
+            47,
+            0.1
+        );
+}
+
+@media (
+    max-width: 576px
+) {
+
+    .order-history-actions {
+        flex-direction:
+            column;
+    }
+
+    .order-history-actions
+    .btn {
+        width:
+            100%;
+    }
+
+    .order-success-actions {
+        flex-direction:
+            column;
+    }
+
+    .order-success-actions
+    .btn {
+        width:
+            100%;
     }
 
 }

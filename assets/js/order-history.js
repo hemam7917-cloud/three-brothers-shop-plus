@@ -66,6 +66,18 @@ function loadOrders() {
     );
 }
 
+/* =================================
+   Save Orders
+================================= */
+
+function saveOrders(orders) {
+    return saveStorageArray(
+        ORDERS_STORAGE_KEY,
+        orders
+    );
+}
+
+
 
 /* =================================
    Format Order Date
@@ -107,6 +119,103 @@ function normalizeOrderStatus(
         .toLowerCase();
 }
 
+
+/* =================================
+   Order Cancellation Rules
+================================= */
+
+function canCancelOrder(status) {
+    const normalizedStatus =
+        normalizeOrderStatus(
+            status
+        );
+
+    return (
+        normalizedStatus === "pending" ||
+        normalizedStatus === "confirmed"
+    );
+}
+
+
+/* =================================
+   Cancel Order
+================================= */
+
+function cancelOrder(orderId) {
+    const orders =
+        loadOrders();
+
+    const orderIndex =
+        orders.findIndex(
+            (order) =>
+                String(order.id) ===
+                String(orderId)
+        );
+
+    if (orderIndex === -1) {
+        showToast(
+            "Order not found.",
+            "error"
+        );
+
+        return;
+    }
+
+    const order =
+        orders[orderIndex];
+
+    if (
+        !canCancelOrder(
+            order.status
+        )
+    ) {
+        showToast(
+            "This order can no longer be cancelled.",
+            "error"
+        );
+
+        return;
+    }
+
+    const confirmed =
+        window.confirm(
+            `Are you sure you want to cancel order "${order.id}"?`
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    orders[orderIndex] = {
+        ...order,
+
+        status: "cancelled",
+
+        cancelledAt:
+            new Date().toISOString()
+    };
+
+    const saved =
+        saveOrders(
+            orders
+        );
+
+    if (!saved) {
+        showToast(
+            "Could not cancel the order. Please try again.",
+            "error"
+        );
+
+        return;
+    }
+
+    showToast(
+        "Order cancelled successfully.",
+        "info"
+    );
+
+    applyOrderFilters();
+}
 
 /* =================================
    Get Status CSS Class
@@ -641,21 +750,39 @@ function renderOrders(
 
 
                             <div
-                                class="order-history-actions">
+    class="order-history-actions">
 
-                                <a
-                                    href="order-success.html?orderId=${
-                                        encodeURIComponent(
-                                            order.id
-                                        )
-                                    }"
-                                    class="btn btn-outline">
+    <a
+        href="order-success.html?orderId=${
+            encodeURIComponent(
+                order.id
+            )
+        }"
+        class="btn btn-outline">
 
-                                    View Details
+        View Details
 
-                                </a>
+    </a>
 
-                            </div>
+    ${
+        canCancelOrder(
+            status
+        )
+            ? `
+                <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-action="cancel-order"
+                    data-order-id="${order.id}">
+
+                    Cancel Order
+
+                </button>
+            `
+            : ""
+    }
+
+</div>
 
                         </article>
                     `;
@@ -846,7 +973,7 @@ if (
 
 
 /* =================================
-   Dynamic Empty Reset Button Event
+   Order History Dynamic Events
 ================================= */
 
 if (
@@ -861,13 +988,25 @@ if (
                     "#empty-reset-order-filters"
                 );
 
-            if (
-                !resetButton
-            ) {
+            if (resetButton) {
+                resetOrderFilters();
+
                 return;
             }
 
-            resetOrderFilters();
+            const cancelButton =
+                event.target.closest(
+                    '[data-action="cancel-order"]'
+                );
+
+            if (cancelButton) {
+                const orderId =
+                    cancelButton.dataset.orderId;
+
+                cancelOrder(
+                    orderId
+                );
+            }
         }
     );
 }
