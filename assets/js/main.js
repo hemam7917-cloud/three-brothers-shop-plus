@@ -178,6 +178,16 @@ const skeleton =
 const featuredProducts =
     document.getElementById("featured-products");
 
+    const homeRecentlyViewedSection =
+    document.getElementById(
+        "home-recently-viewed-section"
+    );
+
+const homeRecentlyViewedGrid =
+    document.getElementById(
+        "home-recently-viewed-grid"
+    );
+
 
 /* =================================
    Shopping Cart State
@@ -232,6 +242,7 @@ window.addEventListener(
     () => {
         refreshCartFromStorage();
         refreshWishlistFromStorage();
+        renderHomeRecentlyViewed();
     }
 );
 
@@ -756,6 +767,8 @@ if (typeof products !== "undefined") {
         "Products data not found. Make sure products.js is loaded before main.js."
     );
 }
+renderHomeRecentlyViewed();
+
 
 
 /* =================================
@@ -780,7 +793,215 @@ window.addEventListener("load", () => {
     }
 });
 
+/* =================================
+   Homepage Recently Viewed
+================================= */
 
+function renderHomeRecentlyViewed() {
+    if (
+        !homeRecentlyViewedSection ||
+        !homeRecentlyViewedGrid
+    ) {
+        return;
+    }
+
+    const recentlyViewed =
+        loadRecentlyViewed();
+
+    if (
+        recentlyViewed.length === 0
+    ) {
+        homeRecentlyViewedSection.hidden =
+            true;
+
+        homeRecentlyViewedGrid.innerHTML =
+            "";
+
+        return;
+    }
+
+    homeRecentlyViewedSection.hidden =
+        false;
+
+    homeRecentlyViewedGrid.innerHTML =
+        recentlyViewed
+            .slice(0, 4)
+            .map(
+                (product) => {
+
+                    const wishlisted =
+                        isProductInWishlist(
+                            product.id
+                        );
+
+                    return `
+                        <article
+                            class="product-card"
+                            data-product-id="${product.id}">
+
+                            ${
+                                product.badge
+                                    ? `
+                                        <span
+                                            class="product-badge">
+
+                                            ${product.badge}
+
+                                        </span>
+                                    `
+                                    : ""
+                            }
+
+                            <a
+                                href="product-details.html?id=${
+                                    encodeURIComponent(
+                                        product.id
+                                    )
+                                }"
+                                class="product-image-link">
+
+                                <img
+                                    src="${product.image}"
+                                    alt="${product.name}"
+                                    width="800"
+                                    height="800"
+                                    loading="lazy"
+                                    decoding="async">
+
+                            </a>
+
+                            <h3>
+
+                                <a
+                                    href="product-details.html?id=${
+                                        encodeURIComponent(
+                                            product.id
+                                        )
+                                    }"
+                                    class="product-title-link">
+
+                                    ${product.name}
+
+                                </a>
+
+                            </h3>
+
+                            <p class="rating">
+
+                                ⭐ ${
+                                    product.rating || 0
+                                }
+
+                                (${
+                                    product.reviews || 0
+                                } Reviews)
+
+                            </p>
+
+                            <p class="price">
+
+                                ${formatPrice(
+                                    product.price
+                                )}
+
+                            </p>
+
+                            <div class="product-actions">
+
+                                <button
+                                    type="button"
+                                    class="wishlist-btn ${
+                                        wishlisted
+                                            ? "active"
+                                            : ""
+                                    }"
+                                    data-action="recent-wishlist"
+                                    data-product-id="${product.id}">
+
+                                    ${
+                                        wishlisted
+                                            ? "♥"
+                                            : "♡"
+                                    }
+
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="cart-btn"
+                                    data-action="recent-cart"
+                                    data-product-id="${product.id}">
+
+                                    🛒 Add to Cart
+
+                                </button>
+
+                            </div>
+
+                        </article>
+                    `;
+                }
+            )
+            .join("");
+}
+
+
+
+/* =================================
+   Recently Viewed Product Events
+================================= */
+
+if (
+    homeRecentlyViewedGrid
+) {
+    homeRecentlyViewedGrid
+        .addEventListener(
+            "click",
+            (event) => {
+
+                const actionButton =
+                    event.target.closest(
+                        "[data-action]"
+                    );
+
+                if (!actionButton) {
+                    return;
+                }
+
+                const productId =
+                    Number(
+                        actionButton
+                            .dataset
+                            .productId
+                    );
+
+                const action =
+                    actionButton
+                        .dataset
+                        .action;
+
+                if (
+                    action ===
+                    "recent-cart"
+                ) {
+                    addToCart(
+                        productId
+                    );
+                }
+
+                if (
+                    action ===
+                    "recent-wishlist"
+                ) {
+                    toggleWishlist(
+                        productId
+                    );
+
+                    renderHomeRecentlyViewed();
+                }
+            }
+        );
+}
 
 
 

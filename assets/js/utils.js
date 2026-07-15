@@ -249,3 +249,65 @@ function resetButtonState(button) {
         "false"
     );
 }
+
+/* =================================
+   Recently Viewed Helpers
+================================= */
+
+const RECENTLY_VIEWED_STORAGE_KEY =
+    "tbsp-recently-viewed";
+
+
+function loadRecentlyViewed() {
+    return loadStorageArray(
+        RECENTLY_VIEWED_STORAGE_KEY
+    );
+}
+
+
+function saveRecentlyViewed(
+    products
+) {
+    return saveStorageArray(
+        RECENTLY_VIEWED_STORAGE_KEY,
+        products
+    );
+}
+
+
+function addRecentlyViewedProduct(
+    product,
+    maxItems = 8
+) {
+    if (
+        !product ||
+        product.id === undefined ||
+        product.id === null
+    ) {
+        return;
+    }
+
+    let recentlyViewed =
+        loadRecentlyViewed();
+
+    recentlyViewed =
+        recentlyViewed.filter(
+            (item) =>
+                String(item.id) !==
+                String(product.id)
+        );
+
+    recentlyViewed.unshift({
+        ...product
+    });
+
+    recentlyViewed =
+        recentlyViewed.slice(
+            0,
+            maxItems
+        );
+
+    saveRecentlyViewed(
+        recentlyViewed
+    );
+}

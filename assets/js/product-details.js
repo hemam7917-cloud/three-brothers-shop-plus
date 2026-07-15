@@ -19,6 +19,16 @@ const productDetailsContainer =
         "product-details"
     );
 
+    const recentlyViewedSection =
+    document.getElementById(
+        "recently-viewed-section"
+    );
+
+const recentlyViewedGrid =
+    document.getElementById(
+        "recently-viewed-grid"
+    );
+
 /* =================================
    Generic Storage Loader
 ================================= */
@@ -335,6 +345,188 @@ function renderProductDetails(
     );
 }
 
+
+/* =================================
+   Product Details Dynamic Events
+================================= */
+
+const wishlistButton =
+    productDetailsContainer.querySelector(
+        ".wishlist-btn"
+    );
+
+if (wishlistButton) {
+    wishlistButton.addEventListener(
+        "click",
+        () => {
+            toggleWishlist(
+                product.id
+            );
+
+            const isWishlisted =
+                isProductInWishlist(
+                    product.id
+                );
+
+            wishlistButton.classList.toggle(
+                "active",
+                isWishlisted
+            );
+
+            wishlistButton.textContent =
+                isWishlisted
+                    ? "♥"
+                    : "♡";
+
+            wishlistButton.setAttribute(
+                "aria-label",
+                isWishlisted
+                    ? `Remove ${product.name} from Wishlist`
+                    : `Add ${product.name} to Wishlist`
+            );
+        }
+    );
+}
+
+
+/* =================================
+   Render Recently Viewed Products
+================================= */
+
+function renderRecentlyViewedProducts(
+    currentProductId
+) {
+    if (
+        !recentlyViewedSection ||
+        !recentlyViewedGrid
+    ) {
+        return;
+    }
+
+    const recentlyViewed =
+        loadRecentlyViewed();
+
+    const filteredProducts =
+        recentlyViewed.filter(
+            (product) =>
+                String(product.id) !==
+                String(currentProductId)
+        );
+
+    if (
+        filteredProducts.length === 0
+    ) {
+        recentlyViewedSection.hidden =
+            true;
+
+        recentlyViewedGrid.innerHTML =
+            "";
+
+        return;
+    }
+
+    recentlyViewedSection.hidden =
+        false;
+
+    recentlyViewedGrid.innerHTML =
+        filteredProducts
+            .slice(0, 4)
+            .map(
+                (product) => `
+                    <article
+                        class="product-card"
+                        data-product-id="${product.id}">
+
+                        ${
+                            product.badge
+                                ? `
+                                    <span
+                                        class="product-badge">
+
+                                        ${product.badge}
+
+                                    </span>
+                                `
+                                : ""
+                        }
+
+                        <a
+                            href="product-details.html?id=${
+                                encodeURIComponent(
+                                    product.id
+                                )
+                            }"
+                            class="product-image-link"
+                            aria-label="View details for ${product.name}">
+
+                            <img
+                                src="${product.image}"
+                                alt="${product.name}"
+                                width="800"
+                                height="800"
+                                loading="lazy"
+                                decoding="async">
+
+                        </a>
+
+                        <h3>
+
+                            <a
+                                href="product-details.html?id=${
+                                    encodeURIComponent(
+                                        product.id
+                                    )
+                                }"
+                                class="product-title-link">
+
+                                ${product.name}
+
+                            </a>
+
+                        </h3>
+
+                        <p class="rating">
+
+                            ⭐ ${
+                                product.rating || 0
+                            }
+
+                            (${
+                                product.reviews || 0
+                            } Reviews)
+
+                        </p>
+
+                        <p class="price">
+
+                            ${formatPrice(
+                                product.price
+                            )}
+
+                        </p>
+
+                        <div class="product-actions">
+
+                            <button
+                                type="button"
+                                class="recent-cart-btn cart-btn"
+                                data-action="recent-add-cart"
+                                data-product-id="${product.id}">
+
+                                🛒 Add to Cart
+
+                            </button>
+
+                        </div>
+
+                    </article>
+                `
+            )
+            .join("");
+}
+
+
+
 /* =================================
    Product Detail Events
 ================================= */
@@ -392,20 +584,7 @@ function setupProductDetailsEvents(
         
     }
 
-    if (wishlistButton) {
-        wishlistButton.addEventListener(
-            "click",
-            () => {
-                toggleProductWishlist(
-                    product
-                );
-
-                renderProductDetails(
-                    product
-                );
-            }
-        );
-    }
+   
 
 
 /* =================================
@@ -421,9 +600,104 @@ const selectedProduct =
     );
 
 if (!selectedProduct) {
+
     renderMissingProduct();
+
 } else {
+
+    /*
+       First render older recently
+       viewed products.
+    */
+
+    renderRecentlyViewedProducts(
+        selectedProduct.id
+    );
+
+    /*
+       Then save current product
+       as most recently viewed.
+    */
+
+    addRecentlyViewedProduct(
+        selectedProduct
+    );
+
+    /*
+       Finally render current
+       product details.
+    */
+
     renderProductDetails(
         selectedProduct
+    );
+}
+
+
+/* =================================
+   Add Recently Viewed Product To Cart
+================================= */
+
+function addRecentlyViewedToCart(
+    productId
+) {
+    if (
+        typeof products ===
+        "undefined"
+    ) {
+        return;
+    }
+
+    const product =
+        products.find(
+            (item) =>
+                String(item.id) ===
+                String(productId)
+        );
+
+    if (!product) {
+        showToast(
+            "Product not found.",
+            "error"
+        );
+
+        return;
+    }
+
+    addProductToCart(
+        product
+    );
+}
+
+
+/* =================================
+   Recently Viewed Events
+================================= */
+
+if (
+    recentlyViewedGrid
+) {
+    recentlyViewedGrid.addEventListener(
+        "click",
+        (event) => {
+
+            const actionButton =
+                event.target.closest(
+                    '[data-action="recent-add-cart"]'
+                );
+
+            if (!actionButton) {
+                return;
+            }
+
+            const productId =
+                actionButton
+                    .dataset
+                    .productId;
+
+            addRecentlyViewedToCart(
+                productId
+            );
+        }
     );
 }

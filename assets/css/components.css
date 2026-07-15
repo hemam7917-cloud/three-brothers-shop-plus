@@ -2992,3 +2992,32 @@ button:disabled {
     }
 
 }
+
+
+/* ===================================
+   RECENTLY VIEWED PRODUCTS
+=================================== */
+
+.recently-viewed-section {
+    padding:
+        70px 0;
+}
+
+.product-details-page
+.recently-viewed-section {
+    margin-top:
+        60px;
+
+    padding:
+        50px 0 0;
+}
+
+.recently-viewed-section[hidden] {
+    display:
+        none !important;
+}
+
+#home-recently-viewed-section {
+    background:
+        var(--surface-color-2);
+}
