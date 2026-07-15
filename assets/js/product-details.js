@@ -29,6 +29,16 @@ const recentlyViewedGrid =
         "recently-viewed-grid"
     );
 
+    const relatedProductsSection =
+    document.getElementById(
+        "related-products-section"
+    );
+
+const relatedProductsGrid =
+    document.getElementById(
+        "related-products-grid"
+    );
+
 /* =================================
    Generic Storage Loader
 ================================= */
@@ -606,8 +616,8 @@ if (!selectedProduct) {
 } else {
 
     /*
-       First render older recently
-       viewed products.
+       Show previously viewed
+       products first.
     */
 
     renderRecentlyViewedProducts(
@@ -615,8 +625,17 @@ if (!selectedProduct) {
     );
 
     /*
-       Then save current product
-       as most recently viewed.
+       Render related
+       recommendations.
+    */
+
+    renderRelatedProducts(
+        selectedProduct
+    );
+
+    /*
+       Save current product
+       to recently viewed.
     */
 
     addRecentlyViewedProduct(
@@ -624,7 +643,7 @@ if (!selectedProduct) {
     );
 
     /*
-       Finally render current
+       Render current
        product details.
     */
 
@@ -632,7 +651,6 @@ if (!selectedProduct) {
         selectedProduct
     );
 }
-
 
 /* =================================
    Add Recently Viewed Product To Cart
@@ -698,6 +716,261 @@ if (
             addRecentlyViewedToCart(
                 productId
             );
+        }
+    );
+}
+
+/* =================================
+   Product Card HTML
+================================= */
+
+function createRecommendationCardHTML(
+    product
+) {
+    const wishlisted =
+        isProductWishlisted(
+            product.id
+        );
+
+    return `
+        <article
+            class="product-card"
+            data-product-id="${product.id}">
+
+            ${
+                product.badge
+                    ? `
+                        <span
+                            class="product-badge">
+
+                            ${product.badge}
+
+                        </span>
+                    `
+                    : ""
+            }
+
+            <a
+                href="product-details.html?id=${
+                    encodeURIComponent(
+                        product.id
+                    )
+                }"
+                class="product-image-link"
+                aria-label="View details for ${product.name}">
+
+                <img
+                    src="${product.image}"
+                    alt="${product.name}"
+                    width="800"
+                    height="800"
+                    loading="lazy"
+                    decoding="async">
+
+            </a>
+
+            <h3>
+
+                <a
+                    href="product-details.html?id=${
+                        encodeURIComponent(
+                            product.id
+                        )
+                    }"
+                    class="product-title-link">
+
+                    ${product.name}
+
+                </a>
+
+            </h3>
+
+            <p class="rating">
+
+                ⭐ ${
+                    product.rating || 0
+                }
+
+                (${
+                    product.reviews || 0
+                } Reviews)
+
+            </p>
+
+            <p class="price">
+
+                ${formatPrice(
+                    product.price
+                )}
+
+            </p>
+
+            <div class="product-actions">
+
+                <button
+                    type="button"
+                    class="
+                        wishlist-btn
+                        ${
+                            wishlisted
+                                ? "active"
+                                : ""
+                        }
+                    "
+                    data-action="recommendation-wishlist"
+                    data-product-id="${product.id}"
+                    aria-pressed="${wishlisted}">
+
+                    ${
+                        wishlisted
+                            ? "♥"
+                            : "♡"
+                    }
+
+                </button>
+
+                <button
+                    type="button"
+                    class="cart-btn"
+                    data-action="recommendation-cart"
+                    data-product-id="${product.id}">
+
+                    🛒 Add to Cart
+
+                </button>
+
+            </div>
+
+        </article>
+    `;
+}
+
+/* =================================
+   Render Related Products
+================================= */
+
+function renderRelatedProducts(
+    currentProduct
+) {
+    if (
+        !relatedProductsSection ||
+        !relatedProductsGrid ||
+        typeof products ===
+            "undefined"
+    ) {
+        return;
+    }
+
+    const recentlyViewed =
+        loadRecentlyViewed();
+
+    const recommendedProducts =
+        getRecommendedProducts(
+            products,
+            currentProduct,
+            recentlyViewed,
+            4
+        );
+
+    if (
+        recommendedProducts.length ===
+        0
+    ) {
+        relatedProductsSection.hidden =
+            true;
+
+        relatedProductsGrid.innerHTML =
+            "";
+
+        return;
+    }
+
+    relatedProductsSection.hidden =
+        false;
+
+    relatedProductsGrid.innerHTML =
+        recommendedProducts
+            .map(
+                (product) =>
+                    createRecommendationCardHTML(
+                        product
+                    )
+            )
+            .join("");
+}
+
+
+/* =================================
+   Related Products Events
+================================= */
+
+if (
+    relatedProductsGrid
+) {
+    relatedProductsGrid.addEventListener(
+        "click",
+        (event) => {
+
+            const actionButton =
+                event.target.closest(
+                    "[data-action]"
+                );
+
+            if (!actionButton) {
+                return;
+            }
+
+            const productId =
+                Number(
+                    actionButton
+                        .dataset
+                        .productId
+                );
+
+            const action =
+                actionButton
+                    .dataset
+                    .action;
+
+            const product =
+                products.find(
+                    (item) =>
+                        Number(
+                            item.id
+                        ) ===
+                        productId
+                );
+
+            if (!product) {
+                showToast(
+                    "Product not found.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (
+                action ===
+                "recommendation-cart"
+            ) {
+                addProductToCart(
+                    product
+                );
+            }
+
+            if (
+                action ===
+                "recommendation-wishlist"
+            ) {
+                toggleProductWishlist(
+                    product
+                );
+
+                renderRelatedProducts(
+                    selectedProduct
+                );
+            }
         }
     );
 }

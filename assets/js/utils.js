@@ -311,3 +311,148 @@ function addRecentlyViewedProduct(
         recentlyViewed
     );
 }
+
+/* =================================
+   Product Recommendation Helpers
+================================= */
+
+function getRecommendedProducts(
+    allProducts,
+    currentProduct,
+    recentlyViewed = [],
+    maxItems = 4
+) {
+    if (
+        !Array.isArray(allProducts) ||
+        !currentProduct
+    ) {
+        return [];
+    }
+
+    const currentProductId =
+        String(currentProduct.id);
+
+    const currentCategory =
+        String(
+            currentProduct.category || ""
+        )
+            .trim()
+            .toLowerCase();
+
+    const recommendationMap =
+        new Map();
+
+    /* ---------------------------------
+       1. Same Category Products
+    --------------------------------- */
+
+    allProducts.forEach(
+        (product) => {
+            const productId =
+                String(product.id);
+
+            const productCategory =
+                String(
+                    product.category || ""
+                )
+                    .trim()
+                    .toLowerCase();
+
+            if (
+                productId !==
+                    currentProductId &&
+                productCategory ===
+                    currentCategory
+            ) {
+                recommendationMap.set(
+                    productId,
+                    product
+                );
+            }
+        }
+    );
+
+    /* ---------------------------------
+       2. Recently Viewed Products
+    --------------------------------- */
+
+    recentlyViewed.forEach(
+        (recentProduct) => {
+            const productId =
+                String(
+                    recentProduct.id
+                );
+
+            if (
+                productId ===
+                currentProductId
+            ) {
+                return;
+            }
+
+            if (
+                recommendationMap.has(
+                    productId
+                )
+            ) {
+                return;
+            }
+
+            const fullProduct =
+                allProducts.find(
+                    (product) =>
+                        String(
+                            product.id
+                        ) ===
+                        productId
+                );
+
+            if (fullProduct) {
+                recommendationMap.set(
+                    productId,
+                    fullProduct
+                );
+            }
+        }
+    );
+
+    /* ---------------------------------
+       3. Fallback Products
+    --------------------------------- */
+
+    allProducts.forEach(
+        (product) => {
+            const productId =
+                String(product.id);
+
+            if (
+                productId ===
+                currentProductId
+            ) {
+                return;
+            }
+
+            if (
+                recommendationMap.has(
+                    productId
+                )
+            ) {
+                return;
+            }
+
+            recommendationMap.set(
+                productId,
+                product
+            );
+        }
+    );
+
+    return Array
+        .from(
+            recommendationMap.values()
+        )
+        .slice(
+            0,
+            maxItems
+        );
+}

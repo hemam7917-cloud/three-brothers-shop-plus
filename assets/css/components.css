@@ -3021,3 +3021,41 @@ button:disabled {
     background:
         var(--surface-color-2);
 }
+
+/* ===================================
+   PRODUCT RECOMMENDATIONS
+=================================== */
+
+.recommendation-section {
+    padding:
+        70px 0;
+}
+
+.product-details-page
+.recommendation-section {
+    margin-top:
+        60px;
+
+    padding:
+        50px 0 0;
+}
+
+.recommendation-section[hidden] {
+    display:
+        none !important;
+}
+
+#home-recommendations-section {
+    background:
+        var(--background-color);
+}
+
+#home-recently-viewed-section {
+    background:
+        var(--surface-color-2);
+}
+
+#home-recommendations-section {
+    background:
+        var(--background-color);
+}

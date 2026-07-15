@@ -188,6 +188,16 @@ const homeRecentlyViewedGrid =
         "home-recently-viewed-grid"
     );
 
+    const homeRecommendationsSection =
+    document.getElementById(
+        "home-recommendations-section"
+    );
+
+const homeRecommendationsGrid =
+    document.getElementById(
+        "home-recommendations-grid"
+    );
+
 
 /* =================================
    Shopping Cart State
@@ -241,8 +251,12 @@ window.addEventListener(
     "pageshow",
     () => {
         refreshCartFromStorage();
+
         refreshWishlistFromStorage();
+
         renderHomeRecentlyViewed();
+
+        renderHomeRecommendations();
     }
 );
 
@@ -760,14 +774,18 @@ if (productGrid) {
    Initial Product Rendering
 ================================= */
 
-if (typeof products !== "undefined") {
-    renderProducts(products);
-} else {
-    console.error(
-        "Products data not found. Make sure products.js is loaded before main.js."
+if (
+    typeof products !==
+    "undefined"
+) {
+    renderProducts(
+        products
     );
 }
+
 renderHomeRecentlyViewed();
+
+renderHomeRecommendations();
 
 
 
@@ -1003,7 +1021,366 @@ if (
         );
 }
 
+/* =================================
+   Homepage Recommendations
+================================= */
 
+function getHomeRecommendedProducts() {
+    if (
+        typeof products ===
+        "undefined"
+    ) {
+        return [];
+    }
+
+    const recentlyViewed =
+        loadRecentlyViewed();
+
+    if (
+        recentlyViewed.length ===
+        0
+    ) {
+        return products.slice(
+            0,
+            4
+        );
+    }
+
+    const latestViewedProduct =
+        products.find(
+            (product) =>
+                String(product.id) ===
+                String(
+                    recentlyViewed[0]
+                        ?.id
+                )
+        );
+
+    if (
+        !latestViewedProduct
+    ) {
+        return products.slice(
+            0,
+            4
+        );
+    }
+
+    return getRecommendedProducts(
+        products,
+        latestViewedProduct,
+        recentlyViewed,
+        4
+    );
+}
+
+
+
+function renderHomeRecommendations() {
+    if (
+        !homeRecommendationsSection ||
+        !homeRecommendationsGrid
+    ) {
+        return;
+    }
+
+    const recommendedProducts =
+        getHomeRecommendedProducts();
+
+    if (
+        recommendedProducts.length ===
+        0
+    ) {
+        homeRecommendationsSection.hidden =
+            true;
+
+        homeRecommendationsGrid.innerHTML =
+            "";
+
+        return;
+    }
+
+    homeRecommendationsSection.hidden =
+        false;
+
+    homeRecommendationsGrid.innerHTML =
+        recommendedProducts
+            .map(
+                (product) => {
+
+                    const wishlisted =
+                        isProductInWishlist(
+                            product.id
+                        );
+
+                    return `
+                        <article
+                            class="product-card"
+                            data-product-id="${product.id}">
+
+                            ${
+                                product.badge
+                                    ? `
+                                        <span
+                                            class="product-badge">
+
+                                            ${product.badge}
+
+                                        </span>
+                                    `
+                                    : ""
+                            }
+
+                            <a
+                                href="product-details.html?id=${
+                                    encodeURIComponent(
+                                        product.id
+                                    )
+                                }"
+                                class="product-image-link">
+
+                                <img
+                                    src="${product.image}"
+                                    alt="${product.name}"
+                                    width="800"
+                                    height="800"
+                                    loading="lazy"
+                                    decoding="async">
+
+                            </a>
+
+                            <h3>
+
+                                <a
+                                    href="product-details.html?id=${
+                                        encodeURIComponent(
+                                            product.id
+                                        )
+                                    }"
+                                    class="product-title-link">
+
+                                    ${product.name}
+
+                                </a>
+
+                            </h3>
+
+                            <p class="rating">
+
+                                ⭐ ${
+                                    product.rating ||
+                                    0
+                                }
+
+                                (${
+                                    product.reviews ||
+                                    0
+                                } Reviews)
+
+                            </p>
+
+                            <p class="price">
+
+                                ${formatPrice(
+                                    product.price
+                                )}
+
+                            </p>
+
+                            <div class="product-actions">
+
+                                <button
+                                    type="button"
+                                    class="
+                                        wishlist-btn
+                                        ${
+                                            wishlisted
+                                                ? "active"
+                                                : ""
+                                        }
+                                    "
+                                    data-action="recommendation-wishlist"
+                                    data-product-id="${product.id}">
+
+                                    ${
+                                        wishlisted
+                                            ? "♥"
+                                            : "♡"
+                                    }
+
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="cart-btn"
+                                    data-action="recommendation-cart"
+                                    data-product-id="${product.id}">
+
+                                    🛒 Add to Cart
+
+                                </button>
+
+                            </div>
+
+                        </article>
+                    `;
+                }
+            )
+            .join("");
+}
+
+
+function renderHomeRecommendations() {
+    if (
+        !homeRecommendationsSection ||
+        !homeRecommendationsGrid
+    ) {
+        return;
+    }
+
+    const recommendedProducts =
+        getHomeRecommendedProducts();
+
+    if (
+        recommendedProducts.length ===
+        0
+    ) {
+        homeRecommendationsSection.hidden =
+            true;
+
+        homeRecommendationsGrid.innerHTML =
+            "";
+
+        return;
+    }
+
+    homeRecommendationsSection.hidden =
+        false;
+
+    homeRecommendationsGrid.innerHTML =
+        recommendedProducts
+            .map(
+                (product) => {
+
+                    const wishlisted =
+                        isProductInWishlist(
+                            product.id
+                        );
+
+                    return `
+                        <article
+                            class="product-card"
+                            data-product-id="${product.id}">
+
+                            ${
+                                product.badge
+                                    ? `
+                                        <span
+                                            class="product-badge">
+
+                                            ${product.badge}
+
+                                        </span>
+                                    `
+                                    : ""
+                            }
+
+                            <a
+                                href="product-details.html?id=${
+                                    encodeURIComponent(
+                                        product.id
+                                    )
+                                }"
+                                class="product-image-link">
+
+                                <img
+                                    src="${product.image}"
+                                    alt="${product.name}"
+                                    width="800"
+                                    height="800"
+                                    loading="lazy"
+                                    decoding="async">
+
+                            </a>
+
+                            <h3>
+
+                                <a
+                                    href="product-details.html?id=${
+                                        encodeURIComponent(
+                                            product.id
+                                        )
+                                    }"
+                                    class="product-title-link">
+
+                                    ${product.name}
+
+                                </a>
+
+                            </h3>
+
+                            <p class="rating">
+
+                                ⭐ ${
+                                    product.rating ||
+                                    0
+                                }
+
+                                (${
+                                    product.reviews ||
+                                    0
+                                } Reviews)
+
+                            </p>
+
+                            <p class="price">
+
+                                ${formatPrice(
+                                    product.price
+                                )}
+
+                            </p>
+
+                            <div class="product-actions">
+
+                                <button
+                                    type="button"
+                                    class="
+                                        wishlist-btn
+                                        ${
+                                            wishlisted
+                                                ? "active"
+                                                : ""
+                                        }
+                                    "
+                                    data-action="recommendation-wishlist"
+                                    data-product-id="${product.id}">
+
+                                    ${
+                                        wishlisted
+                                            ? "♥"
+                                            : "♡"
+                                    }
+
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="cart-btn"
+                                    data-action="recommendation-cart"
+                                    data-product-id="${product.id}">
+
+                                    🛒 Add to Cart
+
+                                </button>
+
+                            </div>
+
+                        </article>
+                    `;
+                }
+            )
+            .join("");
+}
 
 
 
