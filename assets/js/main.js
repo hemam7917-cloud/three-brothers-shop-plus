@@ -197,7 +197,24 @@ const homeRecommendationsGrid =
     document.getElementById(
         "home-recommendations-grid"
     );
+    
+    const compareCount =
+    document.getElementById(
+        "compare-count"
+    );
 
+/* =================================
+   Update Compare Count
+================================= */
+
+function updateCompareCount() {
+    if (!compareCount) {
+        return;
+    }
+
+    compareCount.textContent =
+        getCompareCount();
+}
 
 /* =================================
    Shopping Cart State
@@ -250,13 +267,17 @@ function refreshCartFromStorage() {
 window.addEventListener(
     "pageshow",
     () => {
+
         refreshCartFromStorage();
 
         refreshWishlistFromStorage();
 
+        updateCompareCount();
+
         renderHomeRecentlyViewed();
 
         renderHomeRecommendations();
+
     }
 );
 
@@ -432,7 +453,9 @@ function toggleWishlist(productId) {
 ================================= */
 
 function renderProducts(productList) {
-    if (!productGrid) return;
+    if (!productGrid) {
+        return;
+    }
 
     productGrid.innerHTML = "";
 
@@ -475,87 +498,199 @@ function renderProducts(productList) {
                 product.id
             );
 
+        const isCompared =
+            isProductInCompare(
+                product.id
+            );
+
+        const productPrice =
+            Number(
+                product.price || 0
+            );
+
+        const productRating =
+            Number(
+                product.rating || 0
+            );
+
+        const productReviews =
+            Number(
+                product.reviews || 0
+            );
+
+        const productStock =
+            Number(
+                product.stock || 0
+            );
+
         productCard.className =
             "product-card";
 
         productCard.dataset.productId =
-            product.id;
+            String(product.id);
 
         productCard.innerHTML = `
-            <span class="product-badge">
-                ${product.badge || ""}
-            </span>
+            ${
+                product.badge
+                    ? `
+                        <span class="product-badge">
+                            ${product.badge}
+                        </span>
+                    `
+                    : ""
+            }
 
             <a
-    href="product-details.html?id=${product.id}"
-    class="product-image-link"
-    aria-label="View details for ${product.name}">
+                href="product-details.html?id=${
+                    encodeURIComponent(
+                        product.id
+                    )
+                }"
+                class="product-image-link"
+                aria-label="View details for ${product.name}">
 
-    <img
-        src="${product.image}"
-        alt="${product.name}"
-        width="800"
-        height="800"
-        loading="lazy"
-        decoding="async">
+                <img
+                    src="${product.image}"
+                    alt="${product.name}"
+                    width="800"
+                    height="800"
+                    loading="lazy"
+                    decoding="async">
 
-</a>
+            </a>
 
-           <h3>
-    <a
-        href="product-details.html?id=${product.id}"
-        class="product-title-link">
+            <div class="product-card-content">
 
-        ${product.name}
+                <p class="product-category">
+                    ${product.category || "General"}
+                </p>
 
-    </a>
-</h3>
+                <h3>
 
-            <p class="rating">
-                ⭐ ${product.rating || 0}
-                (${product.reviews || 0} Reviews)
-            </p>
+                    <a
+                        href="product-details.html?id=${
+                            encodeURIComponent(
+                                product.id
+                            )
+                        }"
+                        class="product-title-link">
 
-            <p class="price">
-                ৳${Number(
-                    product.price || 0
-                ).toLocaleString("en-BD")}
-            </p>
+                        ${product.name}
 
-            <div class="product-actions">
+                    </a>
 
-                <button
-                    type="button"
-                    class="wishlist-btn ${
-                        isWishlisted
-                            ? "active"
-                            : ""
-                    }"
-                    data-product-id="${product.id}"
-                    aria-pressed="${isWishlisted}"
-                    aria-label="${
-                        isWishlisted
-                            ? `Remove ${product.name} from Wishlist`
-                            : `Add ${product.name} to Wishlist`
+                </h3>
+
+                <p class="rating">
+
+                    <span aria-hidden="true">
+                        ⭐
+                    </span>
+
+                    ${productRating}
+
+                    <span>
+                        (${productReviews} Reviews)
+                    </span>
+
+                </p>
+
+                <p class="price">
+                    ${formatPrice(
+                        productPrice
+                    )}
+                </p>
+
+                <p
+                    class="product-stock ${
+                        productStock > 0
+                            ? "in-stock"
+                            : "out-of-stock"
                     }">
 
                     ${
-                        isWishlisted
-                            ? "♥"
-                            : "♡"
+                        productStock > 0
+                            ? `${productStock} items in stock`
+                            : "Out of stock"
                     }
 
-                </button>
+                </p>
 
-                <button
-                    type="button"
-                    class="cart-btn"
-                    data-product-id="${product.id}"
-                    aria-label="Add ${product.name} to Cart">
+                <div class="product-actions">
 
-                    🛒 Add to Cart
+                    <button
+                        type="button"
+                        class="wishlist-btn ${
+                            isWishlisted
+                                ? "active"
+                                : ""
+                        }"
+                        data-action="wishlist"
+                        data-product-id="${product.id}"
+                        aria-pressed="${
+                            isWishlisted
+                        }"
+                        aria-label="${
+                            isWishlisted
+                                ? `Remove ${product.name} from Wishlist`
+                                : `Add ${product.name} to Wishlist`
+                        }">
 
-                </button>
+                        ${
+                            isWishlisted
+                                ? "♥"
+                                : "♡"
+                        }
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="compare-btn ${
+                            isCompared
+                                ? "active"
+                                : ""
+                        }"
+                        data-action="compare"
+                        data-product-id="${product.id}"
+                        aria-pressed="${
+                            isCompared
+                        }"
+                        aria-label="${
+                            isCompared
+                                ? `Remove ${product.name} from comparison`
+                                : `Add ${product.name} to comparison`
+                        }">
+
+                        ${
+                            isCompared
+                                ? "✓ Comparing"
+                                : "⚖️ Compare"
+                        }
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="cart-btn"
+                        data-action="cart"
+                        data-product-id="${product.id}"
+                        aria-label="Add ${product.name} to Cart"
+                        ${
+                            productStock <= 0
+                                ? "disabled"
+                                : ""
+                        }>
+
+                        ${
+                            productStock <= 0
+                                ? "Out of Stock"
+                                : "🛒 Add to Cart"
+                        }
+
+                    </button>
+
+                </div>
 
             </div>
         `;
@@ -736,36 +871,105 @@ if (productGrid) {
     productGrid.addEventListener(
         "click",
         (event) => {
-            const cartButton =
+            const actionButton =
                 event.target.closest(
-                    ".cart-btn"
+                    "[data-action]"
                 );
 
-            if (!cartButton) return;
-
-            if (cartButton.disabled) {
+            if (!actionButton) {
                 return;
             }
 
             const productId =
                 Number(
-                    cartButton.dataset.productId
+                    actionButton
+                        .dataset
+                        .productId
                 );
 
-            setButtonLoading(
-                cartButton,
-                "Adding..."
-            );
+            const action =
+                actionButton
+                    .dataset
+                    .action;
 
-            addToCart(
-                productId
-            );
+            if (action === "cart") {
+                if (
+                    actionButton.disabled
+                ) {
+                    return;
+                }
 
-            setButtonSuccess(
-                cartButton,
-                "✓ Added",
-                1000
-            );
+                setButtonLoading(
+                    actionButton,
+                    "Adding..."
+                );
+
+                addToCart(
+                    productId
+                );
+
+                setButtonSuccess(
+                    actionButton,
+                    "✓ Added",
+                    1000
+                );
+
+                return;
+            }
+
+            if (
+                action === "wishlist"
+            ) {
+                toggleWishlist(
+                    productId
+                );
+
+                applyProductFilters();
+
+                return;
+            }
+
+            if (
+                action === "compare"
+            ) {
+                const result =
+                    toggleProductCompare(
+                        productId
+                    );
+
+                if (
+                    result.action ===
+                    "limit-reached"
+                ) {
+                    showToast(
+                        "You can compare a maximum of 4 products.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+                if (!result.success) {
+                    showToast(
+                        "Could not update the comparison list.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+                updateCompareCount();
+
+                applyProductFilters();
+
+                showToast(
+                    result.action ===
+                        "added"
+                        ? "Product added to comparison."
+                        : "Product removed from comparison.",
+                    "info"
+                );
+            }
         }
     );
 }
@@ -1383,4 +1587,75 @@ function renderHomeRecommendations() {
 }
 
 
+/* =================================
+   Homepage Compare Event
+================================= */
 
+if (productGrid) {
+    productGrid.addEventListener(
+        "click",
+        (event) => {
+
+            const compareButton =
+                event.target.closest(
+                    '[data-action="compare"]'
+                );
+
+            if (!compareButton) {
+                return;
+            }
+
+            const productId =
+                compareButton
+                    .dataset
+                    .productId;
+
+            const result =
+                toggleProductCompare(
+                    productId
+                );
+
+            if (
+                result.action ===
+                "limit-reached"
+            ) {
+                showToast(
+                    "You can compare a maximum of 4 products.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (
+                !result.success
+            ) {
+                showToast(
+                    "Could not update comparison list.",
+                    "error"
+                );
+
+                return;
+            }
+
+            updateCompareCount();
+
+            if (
+                typeof products !==
+                "undefined"
+            ) {
+                renderProducts(
+                    products
+                );
+            }
+
+            showToast(
+                result.action ===
+                    "added"
+                    ? "Product added to comparison."
+                    : "Product removed from comparison.",
+                "info"
+            );
+        }
+    );
+}

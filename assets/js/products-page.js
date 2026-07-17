@@ -55,6 +55,11 @@ const wishlistCount =
         "wishlist-count"
     );
 
+    const compareCount =
+    document.getElementById(
+        "compare-count"
+    );
+
 
 /* =================================
    Storage Helpers
@@ -110,6 +115,14 @@ function updateWishlistCount() {
         wishlist.length;
 }
 
+function updateCompareCount() {
+    if (!compareCount) {
+        return;
+    }
+
+    compareCount.textContent =
+        getCompareCount();
+}
 
 /* =================================
    Wishlist Helper
@@ -279,15 +292,15 @@ function renderCatalog(
     }
 
     catalogGrid.innerHTML =
-        productList
-            .map((product) => {
+        productList.map((product) => {
 
-                const wishlisted =
-                    isProductInWishlist(
-                        product.id
-                    );
+    const isWishlisted =
+        isProductInWishlist(product.id);
 
-                return `
+    const compared =
+        isProductInCompare(product.id);
+
+    return `
                     <article
                         class="product-card"
                         data-product-id="${product.id}">
@@ -364,6 +377,24 @@ function renderCatalog(
                                 🛒 Add to Cart
 
                             </button>
+
+                            <button
+    type="button"
+    class="
+        compare-btn
+        ${compared ? "active" : ""}
+    "
+    data-action="compare"
+    data-product-id="${product.id}"
+    aria-pressed="${compared}">
+
+    ${
+        compared
+            ? "✓ Comparing"
+            : "⚖️ Compare"
+    }
+
+</button>
 
                         </div>
 
@@ -735,3 +766,7 @@ updateCartCount();
 updateWishlistCount();
 
 applyCatalogFilters();
+
+applyProductFilters();
+
+updateCompareCount();

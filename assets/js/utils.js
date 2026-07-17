@@ -456,3 +456,280 @@ function getRecommendedProducts(
             maxItems
         );
 }
+
+/* =================================
+   Product Comparison Configuration
+================================= */
+
+const COMPARE_STORAGE_KEY =
+    "tbsp-compare";
+
+const MAX_COMPARE_PRODUCTS =
+    4;
+
+
+/* =================================
+   Load Compare Product IDs
+================================= */
+
+function loadCompareProducts() {
+    const savedCompareProducts =
+        loadStorageArray(
+            COMPARE_STORAGE_KEY
+        );
+
+    return savedCompareProducts
+        .map(
+            (productId) =>
+                String(productId)
+        )
+        .filter(
+            (
+                productId,
+                index,
+                array
+            ) =>
+                array.indexOf(
+                    productId
+                ) === index
+        )
+        .slice(
+            0,
+            MAX_COMPARE_PRODUCTS
+        );
+}
+
+
+/* =================================
+   Save Compare Product IDs
+================================= */
+
+function saveCompareProducts(
+    productIds
+) {
+    const normalizedProductIds =
+        productIds
+            .map(
+                (productId) =>
+                    String(productId)
+            )
+            .filter(
+                (
+                    productId,
+                    index,
+                    array
+                ) =>
+                    array.indexOf(
+                        productId
+                    ) === index
+            )
+            .slice(
+                0,
+                MAX_COMPARE_PRODUCTS
+            );
+
+    return saveStorageArray(
+        COMPARE_STORAGE_KEY,
+        normalizedProductIds
+    );
+}
+
+
+/* =================================
+   Check Product In Compare
+================================= */
+
+function isProductInCompare(
+    productId
+) {
+    const compareProducts =
+        loadCompareProducts();
+
+    return compareProducts.includes(
+        String(productId)
+    );
+}
+
+
+/* =================================
+   Add Product To Compare
+================================= */
+
+function addProductToCompare(
+    productId
+) {
+    const compareProducts =
+        loadCompareProducts();
+
+    const normalizedProductId =
+        String(productId);
+
+    if (
+        compareProducts.includes(
+            normalizedProductId
+        )
+    ) {
+        return {
+            success: false,
+            reason: "already-added",
+            count:
+                compareProducts.length
+        };
+    }
+
+    if (
+        compareProducts.length >=
+        MAX_COMPARE_PRODUCTS
+    ) {
+        return {
+            success: false,
+            reason: "limit-reached",
+            count:
+                compareProducts.length
+        };
+    }
+
+    compareProducts.push(
+        normalizedProductId
+    );
+
+    const saved =
+        saveCompareProducts(
+            compareProducts
+        );
+
+    return {
+        success: Boolean(saved),
+        reason:
+            saved
+                ? "added"
+                : "save-failed",
+        count:
+            compareProducts.length
+    };
+}
+
+
+/* =================================
+   Remove Product From Compare
+================================= */
+
+function removeProductFromCompare(
+    productId
+) {
+    const normalizedProductId =
+        String(productId);
+
+    const compareProducts =
+        loadCompareProducts()
+            .filter(
+                (savedProductId) =>
+                    savedProductId !==
+                    normalizedProductId
+            );
+
+    const saved =
+        saveCompareProducts(
+            compareProducts
+        );
+
+    return {
+        success: Boolean(saved),
+        count:
+            compareProducts.length
+    };
+}
+
+
+/* =================================
+   Toggle Product Compare
+================================= */
+
+function toggleProductCompare(
+    productId
+) {
+    if (
+        isProductInCompare(
+            productId
+        )
+    ) {
+        const result =
+            removeProductFromCompare(
+                productId
+            );
+
+        return {
+            ...result,
+            action: "removed"
+        };
+    }
+
+    const result =
+        addProductToCompare(
+            productId
+        );
+
+    return {
+        ...result,
+        action:
+            result.success
+                ? "added"
+                : result.reason
+    };
+}
+
+
+/* =================================
+   Clear Compare Products
+================================= */
+
+function clearCompareProducts() {
+    return saveCompareProducts(
+        []
+    );
+}
+
+
+/* =================================
+   Get Compare Count
+================================= */
+
+function getCompareCount() {
+    return loadCompareProducts()
+        .length;
+}
+
+
+/* =================================
+   Get Full Compare Products
+================================= */
+
+function getCompareProductData(
+    allProducts
+) {
+    if (
+        !Array.isArray(
+            allProducts
+        )
+    ) {
+        return [];
+    }
+
+    const compareProductIds =
+        loadCompareProducts();
+
+    return compareProductIds
+        .map(
+            (productId) =>
+                allProducts.find(
+                    (product) =>
+                        String(
+                            product.id
+                        ) ===
+                        String(
+                            productId
+                        )
+                )
+        )
+        .filter(Boolean);
+}

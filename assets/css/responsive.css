@@ -155,3 +155,56 @@
         font-size: 20px;
     }
 }
+
+/* ===================================
+   PRODUCT COMPARISON RESPONSIVE
+=================================== */
+
+@media (
+    max-width: 768px
+) {
+
+    .compare-page {
+        padding:
+            40px 0 60px;
+    }
+
+
+    .compare-toolbar {
+        align-items:
+            stretch;
+
+        flex-direction:
+            column;
+    }
+
+
+    .compare-toolbar
+    .btn {
+        width:
+            100%;
+    }
+
+
+    .compare-empty-state {
+        margin:
+            30px auto;
+
+        padding:
+            35px 20px;
+    }
+
+
+    .compare-empty-actions {
+        flex-direction:
+            column;
+    }
+
+
+    .compare-empty-actions
+    .btn {
+        width:
+            100%;
+    }
+
+}
